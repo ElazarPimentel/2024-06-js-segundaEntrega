@@ -1,4 +1,5 @@
 // File name: scss/style.scss
+// Version: 14
 
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
@@ -32,10 +33,14 @@ button {
     cursor: pointer;
     box-shadow: 0 2px 4px $button-shadow;
     transition: background-color 0.3s;
+
+    &:hover {
+        background-color: $secondary-color;
+    }
 }
 
-button:hover {
-    background-color: $secondary-color;
+.btn-small {
+    padding: 5px 10px;
 }
 
 .hidden {
@@ -53,4 +58,30 @@ button:hover {
 
 .dark-theme button:hover {
     background-color: $primary-color;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+h1 {
+    margin: 0;
+}
+
+#theme-toggle {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px $button-shadow;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: $secondary-color;
+    }
 }

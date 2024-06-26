@@ -1,60 +1,65 @@
-<!-- file name: Alessio Aguirre -->
- <!-- version 11 -->
+<!-- file name: index.html 
+ Alumno: Alessio Aguirre Pimentel
+ Version 14 -->
 
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veterinaria Pata-pata-gonica</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/main.js"></script>
-</head>
-
-<body>
-    <header>
-        <h1>Veterinaria Pata-pata-gonica</h1>
-        <button id="theme-toggle">Cambiar Oscuro / Claro</button>
-    </header>
-    <main>
-        <!-- Sección de Registro de Usuario -->
-        <section id="user-section">
-            <h2>Registro de Usuario</h2>
-            <form id="user-form">
-                <input type="text" id="username" placeholder="Nombre" required>
-                <input type="tel" id="phone" placeholder="Teléfono" required>
-                <button type="submit" class="btn-small">Registrar</button>
-            </form>
-        </section>
-
-        <!-- Sección de Registro de Mascota -->
-        <section id="pet-section" class="hidden">
-            <h2>Registro de Mascota</h2>
-            <form id="pet-form">
-                <input type="text" id="pet-name" placeholder="Nombre de la Mascota" required>
-                <input type="number" id="pet-age" placeholder="Edad de la Mascota" required>
-                <button type="submit" class="btn-small">Registrar Mascota</button>
-            </form>
-        </section>
-
-        <!-- Sección de Turnos -->
-        <section id="appointment-section" class="hidden">
-            <h2>Turnos</h2>
-            <form id="appointment-form">
-                <input type="date" id="appointment-date" required>
-                <input type="time" id="appointment-time" required>
-                <select id="service-select" required>
-                    <option value="Baño y Peinado">Baño y Peinado</option>
-                    <option value="Vacunación">Vacunación</option>
-                    <option value="Eliminación de Pulgas">Eliminación de Pulgas</option>
-                </select>
-                <button type="submit" class="btn-small">Solicitar Turno</button>
-            </form>
-            <div id="appointments-list"></div>
-        </section>
-    </main>
-
-</body>
-
-</html>
+ <!DOCTYPE html>
+ <html lang="es">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Veterinaria Pata-pata-gonica</title>
+     <link rel="stylesheet" href="css/style.css">
+     <script defer src="js/main.js"></script>
+ </head>
+ 
+ <body>
+     <header>
+         <div class="header-container">
+             <h1>Veterinaria Pata-pata-gonica2</h1>
+             <button id="theme-toggle">Cambiar Oscuro / Claro</button>
+         </div>
+     </header>
+ 
+     <main>
+         <!-- Sección de Registro de Usuario -->
+         <section id="user-section">
+             <h2>Registro de Usuario</h2>
+             <form id="user-form">
+                 <input type="text" id="username" placeholder="Nombre" required>
+                 <input type="tel" id="phone" placeholder="Teléfono" required>
+                 <button type="submit" class="btn-small">Registrar</button>
+             </form>
+         </section>
+ 
+         <!-- Sección de Registro de Mascota -->
+         <section id="pet-section" class="hidden">
+             <h2>Registro de Mascota</h2>
+             <form id="pet-form">
+                 <input type="text" id="pet-name" placeholder="Nombre de la Mascota" required>
+                 <input type="number" id="pet-age" placeholder="Edad de la Mascota" required>
+                 <button type="submit" class="btn-small">Registrar Mascota</button>
+             </form>
+         </section>
+ 
+         <!-- Sección de Turnos -->
+         <section id="appointment-section" class="hidden">
+             <h2>Turnos</h2>
+             <form id="appointment-form">
+                 <input type="date" id="appointment-date" required>
+                 <input type="time" id="appointment-time" required>
+                 <select id="service-select" required>
+                     <option value="Baño y Peinado">Baño y Peinado</option>
+                     <option value="Vacunación">Vacunación</option>
+                     <option value="Eliminación de Pulgas">Eliminación de Pulgas</option>
+                 </select>
+                 <button type="submit" class="btn-small">Solicitar Turno</button>
+             </form>
+             <div id="appointments-list"></div>
+         </section>
+     </main>
+ 
+ </body>
+ 
+ </html>
+ 
