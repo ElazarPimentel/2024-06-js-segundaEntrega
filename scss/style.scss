@@ -1,0 +1,28 @@
+$textColor: chocolate;
+$background: black;
+$padding-general: .8rem;
+$margin-general: 0;
+$font-size-general: 20px;
+$border-color: white;
+$border-radius: 10px;
+
+* {
+    color: $textColor;
+    background-color: $background;
+    padding: $padding-general;
+    margin: $margin-general;
+    font-size: $font-size-general;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+    border: 2px solid $border-color;
+    border-radius: $border-radius;
+    padding: $padding-general;
+}
+
+.text-center {
+    text-align: center;
+}
