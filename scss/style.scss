@@ -6,7 +6,7 @@ $dark-bg: #2c3e50;
 $light-bg: #ecf0f1;
 $dark-text: #ecf0f1;
 $light-text: #2c3e50;
-$button-shaddow: black;
+$button-shadow: rgba(0, 0, 0, 0.1);
 
 body {
     font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@ body {
     margin: auto;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px $button-shaddow;
+    box-shadow: 0 0 10px $button-shadow;
 }
 
 button {
@@ -30,7 +30,7 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 2px 4px $button-shaddow;
+    box-shadow: 0 2px 4px $button-shadow;
     transition: background-color 0.3s;
 }
 

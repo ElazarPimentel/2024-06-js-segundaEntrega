@@ -1,6 +1,6 @@
 // Nombre del archivo: main.js
 // Alessio Aguirre Pimentel
-// v11
+// v12
 
 // Variables almacenamiento
 let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
@@ -25,7 +25,7 @@ themeToggle.addEventListener('click', () => {
 // Funciones ayuda
 const guardarEnLocalStorage = (clave, valor) => localStorage.setItem(clave, JSON.stringify(valor));
 
-// Funciones generadoras ID
+// Funciones generadoras ID con random para evitar choques
 const generarUsuarioID = () => 'user_' + Math.random().toString(36).substr(2, 9);
 const generarMascotaID = () => 'pet_' + Math.random().toString(36).substr(2, 9);
 const generarTurnoID = () => 'turn_' + Math.random().toString(36).substr(2, 9);

@@ -1,6 +1,3 @@
-// File name: index.html
-// Estudiante: Alessio Aguirre Pimentel
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -10,7 +7,6 @@
     <title>Veterinaria Pata-pata-gonica</title>
     <link rel="stylesheet" href="css/style.css">
     <script defer src="js/main.js"></script>
-
 </head>
 
 <body>
@@ -19,22 +15,27 @@
         <button id="theme-toggle">Toggle Dark/Light Theme</button>
     </header>
     <main>
+        <!-- Sección de Registro de Usuario -->
         <section id="user-section">
             <h2>Registro de Usuario</h2>
             <form id="user-form">
                 <input type="text" id="username" placeholder="Nombre" required>
                 <input type="tel" id="phone" placeholder="Teléfono" required>
-                <button type="submit">Registrar</button>
+                <button type="submit" class="btn-small">Registrar</button>
             </form>
         </section>
+
+        <!-- Sección de Registro de Mascota -->
         <section id="pet-section" class="hidden">
             <h2>Registro de Mascota</h2>
             <form id="pet-form">
                 <input type="text" id="pet-name" placeholder="Nombre de la Mascota" required>
                 <input type="number" id="pet-age" placeholder="Edad de la Mascota" required>
-                <button type="submit">Registrar Mascota</button>
+                <button type="submit" class="btn-small">Registrar Mascota</button>
             </form>
         </section>
+
+        <!-- Sección de Turnos -->
         <section id="appointment-section" class="hidden">
             <h2>Turnos</h2>
             <form id="appointment-form">
@@ -45,7 +46,7 @@
                     <option value="Vacunación">Vacunación</option>
                     <option value="Eliminación de Pulgas">Eliminación de Pulgas</option>
                 </select>
-                <button type="submit">Solicitar Turno</button>
+                <button type="submit" class="btn-small">Solicitar Turno</button>
             </form>
             <div id="appointments-list"></div>
         </section>
