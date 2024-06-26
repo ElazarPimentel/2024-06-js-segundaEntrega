@@ -1,60 +1,56 @@
+// File name: index.html
+// Estudiante: Alessio Aguirre Pimentel
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <script defer src="./js/main.js"></script>
-    <title>Entrega 2</title>
+    <title>Veterinaria Pata-pata-gonica</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/main.js"></script>
+
 </head>
 
 <body>
+    <header>
+        <h1>Veterinaria Pata-pata-gonica</h1>
+        <button id="theme-toggle">Toggle Dark/Light Theme</button>
+    </header>
     <main>
-        <header class="container text-center">
-            <h1>Bienvenido a la Veterinaria Pata-Pata-Gonica</h1>
-            <h2>La primer receta para nuestros pacientes es el amor</h2>
-        </header>
-
-        <section class="container">
-            <h2>Servicios</h2>
-            <ul id="serviciosList"></ul>
-        </section>
-
-        <section class="container">
-            <h2>Hacer una reserva</h2>
-            <form id="usuarioForm">
-                <label for="nombreUsuario">Nombre:</label>
-                <input type="text" id="nombreUsuario" required>
-                <label for="telefonoUsuario">Teléfono:</label>
-                <input type="text" id="telefonoUsuario" required>
-                <button type="submit">Registrar Usuario</button>
-            </form>
-
-            <form id="mascotaTurnoForm" style="display:none;">
-                <label for="nombreMascota">Nombre de la Mascota:</label>
-                <input type="text" id="nombreMascota" required>
-                <label for="edadMascota">Edad de la Mascota:</label>
-                <input type="text" id="edadMascota" required>
-                <label for="fechaTurno">Fecha del Turno:</label>
-                <input type="date" id="fechaTurno" required>
-                <label for="horaTurno">Hora del Turno:</label>
-                <input type="time" id="horaTurno" required>
-                <label for="servicio">Servicio:</label>
-                <select id="servicio"></select>
-                <button type="submit">Registrar Mascota y Turno</button>
+        <section id="user-section">
+            <h2>Registro de Usuario</h2>
+            <form id="user-form">
+                <input type="text" id="username" placeholder="Nombre" required>
+                <input type="tel" id="phone" placeholder="Teléfono" required>
+                <button type="submit">Registrar</button>
             </form>
         </section>
-
-        <section class="container">
+        <section id="pet-section" class="hidden">
+            <h2>Registro de Mascota</h2>
+            <form id="pet-form">
+                <input type="text" id="pet-name" placeholder="Nombre de la Mascota" required>
+                <input type="number" id="pet-age" placeholder="Edad de la Mascota" required>
+                <button type="submit">Registrar Mascota</button>
+            </form>
+        </section>
+        <section id="appointment-section" class="hidden">
             <h2>Turnos</h2>
-            <ul id="turnosList"></ul>
+            <form id="appointment-form">
+                <input type="date" id="appointment-date" required>
+                <input type="time" id="appointment-time" required>
+                <select id="service-select" required>
+                    <option value="Baño y Peinado">Baño y Peinado</option>
+                    <option value="Vacunación">Vacunación</option>
+                    <option value="Eliminación de Pulgas">Eliminación de Pulgas</option>
+                </select>
+                <button type="submit">Solicitar Turno</button>
+            </form>
+            <div id="appointments-list"></div>
         </section>
     </main>
 
-    <footer class="text-center">
-        Todos los derechos reservados
-    </footer>
 </body>
 
 </html>

@@ -1,28 +1,56 @@
-$textColor: chocolate;
-$background: black;
-$padding-general: .8rem;
-$margin-general: 0;
-$font-size-general: 20px;
-$border-color: white;
-$border-radius: 10px;
+// File name: scss/style.scss
 
-* {
-    color: $textColor;
-    background-color: $background;
-    padding: $padding-general;
-    margin: $margin-general;
-    font-size: $font-size-general;
+$primary-color: #3498db;
+$secondary-color: #2ecc71;
+$dark-bg: #2c3e50;
+$light-bg: #ecf0f1;
+$dark-text: #ecf0f1;
+$light-text: #2c3e50;
+$button-shaddow: black;
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: $light-bg;
+    color: $light-text;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
     width: 80%;
-    margin: 0 auto;
-    text-align: left;
-    border: 2px solid $border-color;
-    border-radius: $border-radius;
-    padding: $padding-general;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px $button-shaddow;
 }
 
-.text-center {
-    text-align: center;
+button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px $button-shaddow;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: $secondary-color;
+}
+
+.hidden {
+    display: none;
+}
+
+.dark-theme {
+    background-color: $dark-bg;
+    color: $dark-text;
+}
+
+.dark-theme button {
+    background-color: $secondary-color;
+}
+
+.dark-theme button:hover {
+    background-color: $primary-color;
 }

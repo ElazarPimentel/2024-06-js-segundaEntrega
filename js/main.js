@@ -1,76 +1,87 @@
 // Nombre del archivo: main.js
 // Alessio Aguirre Pimentel
-// v9
+// v11
 
-const usuarios = [], mascotas = [], turnos = [];
-const servicios = ['Baño y Peinado', 'Vacunación', 'Eliminación de Pulgas'];
-let idCounter = 0, idTurnoCounter = 0;
+// Variables almacenamiento
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+let mascotas = JSON.parse(localStorage.getItem('mascotas')) || [];
+let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
 
-// Inicialización variables de texto
-let nombreUsuario = '', telefonoUsuario = '';
+// Referencias del DOM
+const userForm = document.getElementById('user-form');
+const petForm = document.getElementById('pet-form');
+const appointmentForm = document.getElementById('appointment-form');
+const themeToggle = document.getElementById('theme-toggle');
+const userSection = document.getElementById('user-section');
+const petSection = document.getElementById('pet-section');
+const appointmentSection = document.getElementById('appointment-section');
+const appointmentsList = document.getElementById('appointments-list');
 
-// Función mensaje despedida
-const mensajeDespedida = () => alert('🖐️ Gracias y hasta luego 🖐️');
-
-// Función que genera ID's unívocos
-const generarID = () => idCounter++;
-const generarTurnoID = () => idTurnoCounter++;
-
-// Populando lista de servicios
-const serviciosList = document.getElementById('serviciosList');
-const servicioSelect = document.getElementById('servicio');
-servicios.forEach(servicio => {
-    const li = document.createElement('li');
-    li.textContent = servicio;
-    serviciosList.appendChild(li);
-
-    const option = document.createElement('option');
-    option.value = servicio;
-    option.textContent = servicio;
-    servicioSelect.appendChild(option);
+// Manejo temas
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
 });
 
-// Función para registrar datos de usuario
-document.getElementById('usuarioForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    nombreUsuario = document.getElementById('nombreUsuario').value;
-    telefonoUsuario = document.getElementById('telefonoUsuario').value;
-    const usuario = { id: generarID(), nombreUsuario, telefonoUsuario };
-    usuarios.push(usuario);
+// Funciones ayuda
+const guardarEnLocalStorage = (clave, valor) => localStorage.setItem(clave, JSON.stringify(valor));
 
-    document.getElementById('mascotaTurnoForm').style.display = 'block';
-    document.getElementById('usuarioForm').style.display = 'none';
+// Funciones generadoras ID
+const generarUsuarioID = () => 'user_' + Math.random().toString(36).substr(2, 9);
+const generarMascotaID = () => 'pet_' + Math.random().toString(36).substr(2, 9);
+const generarTurnoID = () => 'turn_' + Math.random().toString(36).substr(2, 9);
+
+// Registro usuario
+userForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const nombre = document.getElementById('username').value;
+    const telefono = document.getElementById('phone').value;
+    const nuevoUsuario = { id: generarUsuarioID(), nombre, telefono };
+    usuarios.push(nuevoUsuario);
+    guardarEnLocalStorage('usuarios', usuarios);
+    userForm.reset();
+    userSection.classList.add('hidden');
+    petSection.classList.remove('hidden');
 });
 
-// Función para registrar mascotas y turnos
-document.getElementById('mascotaTurnoForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+// Registro mascota
+petForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const nombre = document.getElementById('pet-name').value;
+    const edad = document.getElementById('pet-age').value;
     const idUsuario = usuarios[usuarios.length - 1].id;
-    const nombreMascota = document.getElementById('nombreMascota').value;
-    const edadMascota = document.getElementById('edadMascota').value;
-    const fechaTurno = document.getElementById('fechaTurno').value;
-    const horaTurno = document.getElementById('horaTurno').value;
-    const servicio = document.getElementById('servicio').value;
+    const nuevaMascota = { id: generarMascotaID(), idUsuario, nombre, edad };
+    mascotas.push(nuevaMascota);
+    guardarEnLocalStorage('mascotas', mascotas);
+    petForm.reset();
+    petSection.classList.add('hidden');
+    appointmentSection.classList.remove('hidden');
+});
 
-    const mascota = { id: generarID(), idUsuario, nombreMascota, edadMascota };
-    mascotas.push(mascota);
-
-    const turno = { id: generarTurnoID(), idMascota: mascota.id, fechaTurno, horaTurno, servicio };
-    turnos.push(turno);
-
-    document.getElementById('mascotaTurnoForm').reset();
-    document.getElementById('turnosContainer').style.display = 'block';
+// Solicitud turno
+appointmentForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const fecha = document.getElementById('appointment-date').value;
+    const hora = document.getElementById('appointment-time').value;
+    const servicio = document.getElementById('service-select').value;
+    const idMascota = mascotas[mascotas.length - 1].id;
+    const nuevoTurno = { id: generarTurnoID(), idMascota, fecha, hora, servicio };
+    turnos.push(nuevoTurno);
+    guardarEnLocalStorage('turnos', turnos);
+    appointmentForm.reset();
     mostrarTurnos();
 });
 
-// Función para mostrar turnos
+// Mostrar turnos
 const mostrarTurnos = () => {
-    const turnosList = document.getElementById('turnosList');
-    turnosList.innerHTML = '';
+    appointmentsList.innerHTML = '';
     turnos.forEach(turno => {
-        const mascota = mascotas.find(mascota => mascota.id === turno.idMascota);
-        const turnoItem = document.createElement('li');
-        turnoItem.textContent = `Mascota: ${mascota.nombreMascota}, Turno: ${turno.fechaTurno} ${turno.horaTurno}, Servicio: ${turno.servicio}`;
-        turnosList.appendChild(turnoItem);
+        const mascota = mascotas.find(m => m.id === turno.idMascota);
+        const usuario = usuarios.find(u => u.id === mascota.idUsuario);
+        const turnoElemento = document.createElement('div');
+        turnoElemento.textContent = `Turno para ${mascota.nombre} (dueño: ${usuario.nombre}) el ${turno.fecha} a las ${turno.hora} para ${turno.servicio}`;
+        appointmentsList.appendChild(turnoElemento);
     });
 };
+
+// Inicio, viejo y querido main
+document.addEventListener('DOMContentLoaded', mostrarTurnos);
