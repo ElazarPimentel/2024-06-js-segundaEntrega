@@ -1,6 +1,6 @@
-// Nombre del archivo: main.js
+// Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v12
+// v13
 
 // Variables almacenamiento
 let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
@@ -79,8 +79,22 @@ const mostrarTurnos = () => {
         const usuario = usuarios.find(u => u.id === mascota.idUsuario);
         const turnoElemento = document.createElement('div');
         turnoElemento.textContent = `Turno para ${mascota.nombre} (dueño: ${usuario.nombre}) el ${turno.fecha} a las ${turno.hora} para ${turno.servicio}`;
+
+        // Botón para eliminar el turno
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.addEventListener('click', () => eliminarTurno(turno.id));
+        turnoElemento.appendChild(deleteButton);
+
         appointmentsList.appendChild(turnoElemento);
     });
+};
+
+// Eliminar turno
+const eliminarTurno = (idTurno) => {
+    turnos = turnos.filter(turno => turno.id !== idTurno);
+    guardarEnLocalStorage('turnos', turnos);
+    mostrarTurnos();
 };
 
 // Inicio, viejo y querido main
