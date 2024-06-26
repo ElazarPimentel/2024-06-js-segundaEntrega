@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v13
+// v15
 
 // Variables almacenamiento
 let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
