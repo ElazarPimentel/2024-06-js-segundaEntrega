@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v16
+// v17
 
 const servicios = {
     1: "Bañado y Peinado",
@@ -58,7 +58,7 @@ class Turno {
     }
 }
 
-// Variables para el localSotre
+// Variables para el localStorage
 let cliente = null;
 let mascotas = JSON.parse(localStorage.getItem('mascotas')) || [];
 let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
@@ -104,6 +104,7 @@ function actualizarHorariosList() {
 
 // Funciones submissions
 function guardarCliente() {
+    console.log("Guardar Cliente button clicked"); // Debugging statement
     const nombre = document.getElementById("cliente-nombre").value;
     const telefono = document.getElementById("cliente-telefono").value;
     cliente = new Cliente(null, nombre, telefono);
@@ -134,7 +135,7 @@ function guardarTurno() {
 function actualizarDOM() {
     // Actualizar detales de cliente
     if (cliente) {
-        document.getElementById("cliente-form").style.display = 'none';
+        document.getElementById("form-cliente").style.display = 'none';
         const clienteDetails = document.createElement('div');
         clienteDetails.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p>Teléfono: ${cliente.clienteTelefono}</p>`;
         document.body.appendChild(clienteDetails);
