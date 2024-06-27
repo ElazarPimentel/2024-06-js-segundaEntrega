@@ -1,6 +1,6 @@
 <!-- file name: index.html 
  Alumno: Alessio Aguirre Pimentel
- Version 15 -->
+ Version 16 -->
 
  <!DOCTYPE html>
  <html lang="es">
@@ -8,57 +8,74 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Veterinaria Pata-pata-gonica</title>
-     <link rel="stylesheet" href="css/style.css">
+     <title>Veterinaria Pata-Pata-Gonia</title>
      <script defer src="js/main.js"></script>
+     <link rel="stylesheet" href="css/style.css">
  </head>
  
  <body>
      <header>
-         <div class="header-container">
-             <h1>Veterinaria Pata-pata-gonica2</h1>
-             <button id="theme-toggle">Cambiar Oscuro / Claro</button>
+         <div class="centered-logo-text">
+             <div class="site-title">Pata-Pata-Gonia</div>
+             <img src="img/logo01.png" alt="Logo de la Veterinaria Pata-Pata-Gonia" title="Logo de la Veterinaria Pata-Pata-Gonia">
          </div>
+         <h1>Bienvenido! en la veterinaria Pata-Pata-Gonia</h1>
      </header>
  
-     <main>
-         <!-- Sección de Registro de Usuario -->
-         <section id="user-section">
-             <h2>Registro de Usuario</h2>
-             <form id="user-form">
-                 <input type="text" id="username" placeholder="Nombre" required>
-                 <input type="tel" id="phone" placeholder="Teléfono" required>
-                 <button type="submit" class="btn-small">Registrar</button>
-             </form>
+     <main class="container-01">
+         <section class="border-01" id="seccion-servicios">
+             <h2>Nuestros servicios</h2>
+             <ul id="servicios-list">
+                 <!-- servicios a llenar con JavaScript -->
+             </ul>
          </section>
  
-         <!-- Sección de Registro de Mascota -->
-         <section id="pet-section" class="hidden">
-             <h2>Registro de Mascota</h2>
-             <form id="pet-form">
-                 <input type="text" id="pet-name" placeholder="Nombre de la Mascota" required>
-                 <input type="number" id="pet-age" placeholder="Edad de la Mascota" required>
-                 <button type="submit" class="btn-small">Registrar Mascota</button>
-             </form>
+         <section class="border-01" id="seccion-horarios">
+             <h2>Nuestros horarios de atención</h2>
+             <ul id="horarios-list">
+                 <!-- horarios a llenar con JavaScript -->
+             </ul>
          </section>
  
-         <!-- Sección de Turnos -->
-         <section id="appointment-section" class="hidden">
+         <section class="border-01" id="seccion-turnos">
              <h2>Turnos</h2>
-             <form id="appointment-form">
-                 <input type="date" id="appointment-date" required>
-                 <input type="time" id="appointment-time" required>
-                 <select id="service-select" required>
-                     <option value="Baño y Peinado">Baño y Peinado</option>
-                     <option value="Vacunación">Vacunación</option>
-                     <option value="Eliminación de Pulgas">Eliminación de Pulgas</option>
-                 </select>
-                 <button type="submit" class="btn-small">Solicitar Turno</button>
+             <p>Sacá un turno:</p>
+             <form id="form-cliente" action="#" method="post">
+                 <label for="cliente-nombre">Tu nombre:</label>
+                 <input type="text" id="cliente-nombre" name="cliente-nombre" required>
+                 <br>
+                 <label for="cliente-telefono">Teléfono:</label>
+                 <input type="tel" id="cliente-telefono" name="cliente-telefono" required>
+                 <br>
+                 <button type="button" id="save-cliente">Guardar Cliente</button>
              </form>
-             <div id="appointments-list"></div>
+             <form id="form-mascota" action="#" method="post">
+                 <label for="mascota-nombre">Nombre de mascota:</label>
+                 <input type="text" id="mascota-nombre" name="mascota-nombre" required>
+                 <label for="mascota-edad">edad (en años):</label>
+                 <input type="number" id="mascota-edad" name="mascota-edad" required>
+                 <br>
+                 <button type="button" id="add-mascota">Añadir Mascota</button>
+             </form>
+             <form id="form-turno" action="#" method="post">
+                 <label for="turno-fecha">Fecha:</label>
+                 <input type="date" id="turno-fecha" name="turno-fecha" required>
+                 <label for="turno-hora">Hora:</label>
+                 <input type="time" id="turno-hora" name="turno-hora" required>
+                 <label for="servicios-elegidos">Servicio</label>
+                 <select id="servicios-elegidos">
+                     <!-- servicios a llenar con JavaScript -->
+                 </select>
+                 <br>
+                 <button type="button" id="save-turno">Guardar Turno</button>
+             </form>
          </section>
      </main>
  
+     <footer class="container-02">
+         <p>Derechos de Autor © 2024 - Alessio Aguirre Pimentel. Todos los derechos reservados. Obra protegida por el
+             Convenio Internacional de Berna, legislación Argentina e Internacional sobre derechos de autor.</p>
+     </footer>
  </body>
  
  </html>

@@ -1,101 +1,155 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v15
+// v16
 
-// Variables almacenamiento
-let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+const servicios = {
+    1: "Bañado y Peinado",
+    2: "Vacunación",
+    3: "Chequeo General",
+    4: "Quitar pulgas"
+};
+
+const horarios = {
+    Lunes: "9:00 - 17:00",
+    Martes: "9:00 - 17:00",
+    Miércoles: "9:00 - 17:00",
+    Jueves: "9:00 - 17:00",
+    Viernes: "9:00 - 17:00",
+    Sábado: "9:00 - 13:00",
+    Domingo: "Guardia"
+};
+
+class Cliente {
+    constructor(clienteId, clienteNombre, clienteTelefono) {
+        this.clienteId = clienteId || this.generateId('cliente');
+        this.clienteNombre = clienteNombre;
+        this.clienteTelefono = clienteTelefono;
+    }
+
+    generateId(prefix) {
+        return `${prefix}_` + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+class Mascota {
+    constructor(mascotaId, mascotaForeignClienteId, mascotaNombre, mascotaEdad) {
+        this.mascotaId = mascotaId || this.generateId('mascota');
+        this.mascotaForeignClienteId = mascotaForeignClienteId;
+        this.mascotaNombre = mascotaNombre;
+        this.mascotaEdad = mascotaEdad;
+    }
+
+    generateId(prefix) {
+        return `${prefix}_` + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+class Turno {
+    constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
+        this.turnoId = turnoId || this.generateId('turno');
+        this.turnoForeignMascotaId = turnoForeignMascotaId;
+        this.turnoFecha = turnoFecha;
+        this.turnoHora = turnoHora;
+        this.turnoForeignServicioId = turnoForeignServicioId;
+    }
+
+    generateId(prefix) {
+        return `${prefix}_` + Math.random().toString(36).substr(2, 9);
+    }
+}
+
+// Variables para el localSotre
+let cliente = null;
 let mascotas = JSON.parse(localStorage.getItem('mascotas')) || [];
 let turnos = JSON.parse(localStorage.getItem('turnos')) || [];
 
-// Referencias del DOM
-const userForm = document.getElementById('user-form');
-const petForm = document.getElementById('pet-form');
-const appointmentForm = document.getElementById('appointment-form');
-const themeToggle = document.getElementById('theme-toggle');
-const userSection = document.getElementById('user-section');
-const petSection = document.getElementById('pet-section');
-const appointmentSection = document.getElementById('appointment-section');
-const appointmentsList = document.getElementById('appointments-list');
+// DOM
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarServiciosList();
+    actualizarHorariosList();
 
-// Manejo temas
-themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
+    // Event listeners
+    document.getElementById("save-cliente").addEventListener("click", guardarCliente);
+    document.getElementById("add-mascota").addEventListener("click", agregarMascota);
+    document.getElementById("save-turno").addEventListener("click", guardarTurno);
 });
 
-// Funciones ayuda
-const guardarEnLocalStorage = (clave, valor) => localStorage.setItem(clave, JSON.stringify(valor));
+// Funciones para populate listas
+function actualizarServiciosList() {
+    const serviciosList = document.getElementById("servicios-list");
+    const serviciosSelect = document.getElementById("servicios-elegidos");
+    serviciosList.innerHTML = '';
+    serviciosSelect.innerHTML = '';
+    Object.entries(servicios).forEach(([id, nombre]) => {
+        const li = document.createElement("li");
+        li.textContent = `${id}. ${nombre}`;
+        serviciosList.appendChild(li);
 
-// Funciones generadoras ID con random para evitar choques
-const generarUsuarioID = () => 'user_' + Math.random().toString(36).substr(2, 9);
-const generarMascotaID = () => 'pet_' + Math.random().toString(36).substr(2, 9);
-const generarTurnoID = () => 'turn_' + Math.random().toString(36).substr(2, 9);
-
-// Registro usuario
-userForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const nombre = document.getElementById('username').value;
-    const telefono = document.getElementById('phone').value;
-    const nuevoUsuario = { id: generarUsuarioID(), nombre, telefono };
-    usuarios.push(nuevoUsuario);
-    guardarEnLocalStorage('usuarios', usuarios);
-    userForm.reset();
-    userSection.classList.add('hidden');
-    petSection.classList.remove('hidden');
-});
-
-// Registro mascota
-petForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const nombre = document.getElementById('pet-name').value;
-    const edad = document.getElementById('pet-age').value;
-    const idUsuario = usuarios[usuarios.length - 1].id;
-    const nuevaMascota = { id: generarMascotaID(), idUsuario, nombre, edad };
-    mascotas.push(nuevaMascota);
-    guardarEnLocalStorage('mascotas', mascotas);
-    petForm.reset();
-    petSection.classList.add('hidden');
-    appointmentSection.classList.remove('hidden');
-});
-
-// Solicitud turno
-appointmentForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const fecha = document.getElementById('appointment-date').value;
-    const hora = document.getElementById('appointment-time').value;
-    const servicio = document.getElementById('service-select').value;
-    const idMascota = mascotas[mascotas.length - 1].id;
-    const nuevoTurno = { id: generarTurnoID(), idMascota, fecha, hora, servicio };
-    turnos.push(nuevoTurno);
-    guardarEnLocalStorage('turnos', turnos);
-    appointmentForm.reset();
-    mostrarTurnos();
-});
-
-// Mostrar turnos
-const mostrarTurnos = () => {
-    appointmentsList.innerHTML = '';
-    turnos.forEach(turno => {
-        const mascota = mascotas.find(m => m.id === turno.idMascota);
-        const usuario = usuarios.find(u => u.id === mascota.idUsuario);
-        const turnoElemento = document.createElement('div');
-        turnoElemento.textContent = `Turno para ${mascota.nombre} (dueño: ${usuario.nombre}) el ${turno.fecha} a las ${turno.hora} para ${turno.servicio}`;
-
-        // Botón para eliminar el turno
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Eliminar';
-        deleteButton.addEventListener('click', () => eliminarTurno(turno.id));
-        turnoElemento.appendChild(deleteButton);
-
-        appointmentsList.appendChild(turnoElemento);
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = nombre;
+        serviciosSelect.appendChild(option);
     });
-};
+}
 
-// Eliminar turno
-const eliminarTurno = (idTurno) => {
-    turnos = turnos.filter(turno => turno.id !== idTurno);
-    guardarEnLocalStorage('turnos', turnos);
-    mostrarTurnos();
-};
+function actualizarHorariosList() {
+    const horariosList = document.getElementById("horarios-list");
+    horariosList.innerHTML = '';
+    Object.entries(horarios).forEach(([dia, horas]) => {
+        const li = document.createElement("li");
+        li.textContent = `${dia}: ${horas}`;
+        horariosList.appendChild(li);
+    });
+}
 
-// Inicio, viejo y querido main
-document.addEventListener('DOMContentLoaded', mostrarTurnos);
+// Funciones submissions
+function guardarCliente() {
+    const nombre = document.getElementById("cliente-nombre").value;
+    const telefono = document.getElementById("cliente-telefono").value;
+    cliente = new Cliente(null, nombre, telefono);
+    localStorage.setItem('cliente', JSON.stringify(cliente));
+    actualizarDOM();
+}
+
+function agregarMascota() {
+    const nombre = document.getElementById("mascota-nombre").value;
+    const edad = document.getElementById("mascota-edad").value;
+    const mascota = new Mascota(null, cliente.clienteId, nombre, edad);
+    mascotas.push(mascota);
+    localStorage.setItem('mascotas', JSON.stringify(mascotas));
+    actualizarDOM();
+}
+
+function guardarTurno() {
+    const fecha = document.getElementById("turno-fecha").value;
+    const hora = document.getElementById("turno-hora").value;
+    const servicioId = document.getElementById("servicios-elegidos").value;
+    const mascota = mascotas[mascotas.length - 1]; // Assuming the last added mascota is the one for the turno
+    const turno = new Turno(null, mascota.mascotaId, fecha, hora, servicioId);
+    turnos.push(turno);
+    localStorage.setItem('turnos', JSON.stringify(turnos));
+    actualizarDOM();
+}
+
+function actualizarDOM() {
+    // Actualizar detales de cliente
+    if (cliente) {
+        document.getElementById("cliente-form").style.display = 'none';
+        const clienteDetails = document.createElement('div');
+        clienteDetails.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p>Teléfono: ${cliente.clienteTelefono}</p>`;
+        document.body.appendChild(clienteDetails);
+    }
+
+    // Actualizar mascotas & turnos
+    const mascotaDetails = document.getElementById("mascota-details");
+    mascotaDetails.innerHTML = '';
+    mascotas.forEach(mascota => {
+        const mascotaDiv = document.createElement('div');
+        mascotaDiv.innerHTML = `<h3>Mascota: ${mascota.mascotaNombre} (${mascota.mascotaEdad} años)</h3>`;
+        const turno = turnos.find(t => t.turnoForeignMascotaId === mascota.mascotaId);
+        if (turno) {
+            mascotaDiv.innerHTML += `<p>Turno: ${turno.turnoFecha} a las ${turno.turnoHora} - Servicio: ${turno.turnoForeignServicioId}</p>`;
+        }
+        mascotaDetails.appendChild(mascotaDiv);
+    });
+}
