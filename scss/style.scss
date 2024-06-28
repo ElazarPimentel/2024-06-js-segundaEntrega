@@ -15,7 +15,7 @@ $input-borde-color: #555;
 body {
     color: $fuente-color;
     background-color: $background-color;
-    font-size: 18px;
+    font-size: 16px;
     padding: 0;
     margin: 0;
 }
@@ -58,8 +58,8 @@ ul {
     text-align: center;
 }
 
-.contenedor {
-    width: 80%;
+.contenedor { //Sin líneas
+    width: 90%;
     padding: 0 0.75rem;
     margin: 1rem auto;
     box-sizing: border-box;
@@ -67,7 +67,7 @@ ul {
     border-radius: 10px;
 }
 
-.contenedor-01 {
+.contenedor-01 { //extend con grid
     @extend .contenedor;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -80,7 +80,7 @@ ul {
     @extend .contenedor;
 }
 
-.borde-01 {
+.borde-01 { 
     border: 2px solid $borde-color-medio;
     border-radius: 10px;
     padding: .5rem;
@@ -112,13 +112,23 @@ section {
 
 form {
     margin-bottom: 1rem;
+
+    
+    input[type="text"] {
+        &[id*="mascota-nombre"] {
+            width: 10ch;
+        }
+    }
+
+    input[type="number"] {
+        &[id*="mascota-edad"] {
+            width: 4ch;
+        }
+    }
 }
 
-input[type="text"]#mascota-edad,
 input#cliente-nombre,
-input#cliente-telefono,
-input#mascota-nombre,
-input#mascota-edad {
+input#cliente-telefono {
     padding: 0.2rem;
     margin-bottom: 0.5rem;
 }
@@ -127,13 +137,8 @@ input#cliente-nombre {
     width: 20ch;
 }
 
-input#cliente-telefono,
-input#mascota-nombre {
+input#cliente-telefono {
     width: 15ch;
-}
-
-input#mascota-edad {
-    width: 5ch;
 }
 
 input[type="text"],
@@ -158,11 +163,11 @@ input[type="submit"] {
     background-color: $fuente-color;
     color: $background-color;
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem;
     cursor: pointer;
 
     &:hover {
-        background-color: darken($fuente-color, 10%);
+        background-color: darken($fuente-color, 25%);
     }
 }
 
@@ -170,7 +175,7 @@ input {
     background-color: $input-fondo-color;
     color: $input-texto-color;
     border: 1px solid $input-borde-color;
-    padding: 0.2rem;
+    padding: 0.1rem;
 }
 
 // Media queries

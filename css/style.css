@@ -1,7 +1,7 @@
 body {
   color: gray;
   background-color: black;
-  font-size: 18px;
+  font-size: 16px;
   padding: 0;
   margin: 0; }
 
@@ -36,7 +36,7 @@ ul {
   text-align: center; }
 
 .contenedor, .contenedor-01, .contenedor-02 {
-  width: 80%;
+  width: 90%;
   padding: 0 0.75rem;
   margin: 1rem auto;
   box-sizing: border-box;
@@ -76,24 +76,21 @@ section {
 
 form {
   margin-bottom: 1rem; }
+  form input[type="text"][id*="mascota-nombre"] {
+    width: 10ch; }
+  form input[type="number"][id*="mascota-edad"] {
+    width: 4ch; }
 
-input[type="text"]#mascota-edad,
 input#cliente-nombre,
-input#cliente-telefono,
-input#mascota-nombre,
-input#mascota-edad {
+input#cliente-telefono {
   padding: 0.2rem;
   margin-bottom: 0.5rem; }
 
 input#cliente-nombre {
   width: 20ch; }
 
-input#cliente-telefono,
-input#mascota-nombre {
+input#cliente-telefono {
   width: 15ch; }
-
-input#mascota-edad {
-  width: 5ch; }
 
 input[type="text"],
 input[type="tel"],
@@ -115,16 +112,16 @@ input[type="submit"] {
   background-color: gray;
   color: black;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   cursor: pointer; }
   input[type="submit"]:hover {
-    background-color: #676767; }
+    background-color: #404040; }
 
 input {
   background-color: #333;
   color: white;
   border: 1px solid #555;
-  padding: 0.2rem; }
+  padding: 0.1rem; }
 
 @media (min-width: 992px) {
   .contenedor-01,
