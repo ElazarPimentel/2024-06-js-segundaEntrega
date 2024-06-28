@@ -5,7 +5,7 @@ body {
   padding: 0;
   margin: 0; }
 
-.site-title {
+.sitio-titulo {
   font-weight: bold;
   font-size: 1.5rem;
   color: gray; }
@@ -28,47 +28,35 @@ ul, ol {
 ul {
   list-style: none; }
 
-.centered-logo-text {
+.centrado-logo-texto {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center; }
 
-.container-01 {
+.contenedor, .contenedor-01, .contenedor-02 {
+  width: 80%;
+  padding: 0 0.75rem;
+  margin: 1rem auto;
+  box-sizing: border-box;
+  border: 2px solid white;
+  border-radius: 10px; }
+
+.contenedor-01 {
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: auto 1fr auto;
   grid-gap: 1rem;
-  width: 80%;
-  padding-right: 0.75rem;
-  padding-left: 0.75rem;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: border-box;
-  padding-bottom: 4rem;
-  margin-top: 1rem;
-  border: 2px solid white;
-  border-radius: 10px; }
+  padding-bottom: 4rem; }
 
-.container-02 {
-  width: 80%;
-  padding-right: 0.75rem;
-  padding-left: 0.75rem;
-  margin-right: auto;
-  margin-left: auto;
-  box-sizing: border-box;
-  margin-top: 1rem;
-  border: 2px solid white;
-  border-radius: 10px; }
-
-.border-01 {
+.borde-01 {
   border: 2px solid gray;
   border-radius: 10px;
   padding: .5rem; }
 
-footer {
-  override-colors: 0; }
+section {
+  margin-top: 1rem; }
 
 #seccion-servicios {
   grid-column: 1 / 2;
@@ -82,16 +70,30 @@ footer {
   grid-column: 2 / 3;
   grid-row: 1 / 3; }
 
-section {
-  margin-top: 1rem; }
+#seccion-salida-datos {
+  grid-column: 2 / 3;
+  grid-row: 3 / 3; }
 
 form {
   margin-bottom: 1rem; }
 
-input[type="text"]#mascota-edad {
-  width: 4ch;
+input[type="text"]#mascota-edad,
+input#cliente-nombre,
+input#cliente-telefono,
+input#mascota-nombre,
+input#mascota-edad {
   padding: 0.2rem;
   margin-bottom: 0.5rem; }
+
+input#cliente-nombre {
+  width: 20ch; }
+
+input#cliente-telefono,
+input#mascota-nombre {
+  width: 15ch; }
+
+input#mascota-edad {
+  width: 5ch; }
 
 input[type="text"],
 input[type="tel"],
@@ -106,15 +108,17 @@ option {
   max-width: 300px;
   box-sizing: border-box; }
 
+select#servicios-elegidos {
+  width: 10ch; }
+
 input[type="submit"] {
   background-color: gray;
   color: black;
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer; }
-
-input[type="submit"]:hover {
-  background-color: #676767; }
+  input[type="submit"]:hover {
+    background-color: #676767; }
 
 input {
   background-color: #333;
@@ -123,19 +127,19 @@ input {
   padding: 0.2rem; }
 
 @media (min-width: 992px) {
-  .container-01,
-  .container-02,
-  .container-03 {
+  .contenedor-01,
+  .contenedor-02,
+  .contenedor-03 {
     max-width: 960px; } }
 @media (min-width: 1200px) {
-  .container-01,
-  .container-02,
-  .container-03 {
+  .contenedor-01,
+  .contenedor-02,
+  .contenedor-03 {
     max-width: 1140px; } }
 @media (min-width: 1400px) {
-  .container-01,
-  .container-02,
-  .container-03 {
+  .contenedor-01,
+  .contenedor-02,
+  .contenedor-03 {
     max-width: 1320px; } }
 
 /*# sourceMappingURL=style.css.map */
