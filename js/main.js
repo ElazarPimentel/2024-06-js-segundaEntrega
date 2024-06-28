@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v22
+// v24
 
 const servicios = {
     1: "Bañado y Peinado",
@@ -239,7 +239,7 @@ function actualizarDOM() {
     });
 }
 
-// Function to clear all data from localStorage
+// Borrar todo
 function clearAllData() {
     localStorage.clear();
     cliente = null;
