@@ -1,6 +1,6 @@
 // Nombre del archivo: scss/style.scss
 // Alessio Aguirre Pimentel
-// v22
+// v31
 
 // Variables
 $fuente-color: gray;
@@ -20,6 +20,32 @@ body {
     margin: 0;
 }
 
+header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+
+    #header-izquierda,
+    #header-centro,
+    #header-derecha {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 1.18rem;
+        text-align: center;
+    }
+}
+
 .sitio-titulo {
     font-weight: bold;
     font-size: 1.5rem;
@@ -37,7 +63,8 @@ h2 {
     margin-top: 1rem;
 }
 
-ul, ol {
+ul,
+ol {
     margin-top: 0;
     padding-top: 0;
 
@@ -50,15 +77,7 @@ ul {
     list-style: none;
 }
 
-.centrado-logo-texto {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-}
-
-.contenedor { //Sin líneas
+.contenedor {
     width: 90%;
     padding: 0 0.75rem;
     margin: 1rem auto;
@@ -67,7 +86,7 @@ ul {
     border-radius: 10px;
 }
 
-.contenedor-01 { //extend con grid
+.contenedor-01 {
     @extend .contenedor;
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -78,9 +97,10 @@ ul {
 
 .contenedor-02 {
     @extend .contenedor;
+    text-align: center;
 }
 
-.borde-01 { 
+.borde-01 {
     border: 2px solid $borde-color-medio;
     border-radius: 10px;
     padding: .5rem;
@@ -113,16 +133,37 @@ section {
 form {
     margin-bottom: 1rem;
 
-    
-    input[type="text"] {
-        &[id*="mascota-nombre"] {
-            width: 10ch;
+    input[type="text"],
+    input[type="tel"],
+    select,
+    option {
+        background-color: $input-fondo-color;
+        color: $input-texto-color;
+        border: 1px solid $input-borde-color;
+        padding: 0.15rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
+        max-width: 300px;
+        box-sizing: border-box;
+
+        &[id="numero-mascotas"] {
+            width: 4ch;
+        }
+
+        &[id^="mascota-edad"] {
+            width: 3ch; //ver
         }
     }
 
-    input[type="number"] {
-        &[id*="mascota-edad"] {
-            width: 4ch;
+    input[type="submit"] {
+        background-color: $fuente-color;
+        color: $background-color;
+        border: none;
+        padding: 0.5rem 0.5rem;
+        cursor: pointer;
+
+        &:hover {
+            background-color: darken($fuente-color, 25%); //ver
         }
     }
 }
@@ -141,64 +182,43 @@ input#cliente-telefono {
     width: 15ch;
 }
 
-input[type="text"],
-input[type="tel"],
-select,
-option {
-    background-color: $input-fondo-color;
-    color: $input-texto-color;
-    border: 1px solid $input-borde-color;
-    padding: 0.15rem;
-    margin-bottom: 0.5rem;
-    width: 100%;
-    max-width: 300px;
-    box-sizing: border-box;
+input[id^="mascota-nombre"] {
+    max-width: 10ch;
 }
 
-select#servicios-elegidos {
-    width: 10ch;
+select[id^="servicio"] {
+    max-width: 15ch;
 }
 
-input[type="submit"] {
-    background-color: $fuente-color;
-    color: $background-color;
-    border: none;
-    padding: 0.5rem 0.5rem;
-    cursor: pointer;
-
-    &:hover {
-        background-color: darken($fuente-color, 25%);
+// Media queries rango - arreglar responsive
+@media (max-width: 767px) {
+    .contenedor-01 {
+        max-width: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
     }
 }
 
-input {
-    background-color: $input-fondo-color;
-    color: $input-texto-color;
-    border: 1px solid $input-borde-color;
-    padding: 0.1rem;
-}
-
-// Media queries
-@media (min-width: 992px) {
-    .contenedor-01,
-    .contenedor-02,
-    .contenedor-03 {
-        max-width: 960px;
+@media (min-width: 768px) and (max-width: 991px) {
+    .contenedor-01 {
+        max-width: 750px;
     }
 }
 
-@media (min-width: 1200px) {
-    .contenedor-01,
-    .contenedor-02,
-    .contenedor-03 {
-        max-width: 1140px;
+@media (min-width: 992px) and (max-width: 1199px) {
+    .contenedor-01 {
+        max-width: 970px;
     }
 }
 
-@media (min-width: 1400px) {
-    .contenedor-01,
-    .contenedor-02,
-    .contenedor-03 {
-        max-width: 1320px;
+@media (min-width: 1200px) and (max-width: 1439px) {
+    .contenedor-01 {
+        max-width: 1170px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .contenedor-01 {
+        max-width: 1440px;
     }
 }

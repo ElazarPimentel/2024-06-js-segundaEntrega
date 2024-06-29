@@ -5,6 +5,25 @@ body {
   padding: 0;
   margin: 0; }
 
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  text-align: center; }
+  header #header-izquierda,
+  header #header-centro,
+  header #header-derecha {
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  header img {
+    max-width: 100%;
+    height: auto; }
+  header h1 {
+    font-size: 1.18rem;
+    text-align: center; }
+
 .sitio-titulo {
   font-weight: bold;
   font-size: 1.5rem;
@@ -19,21 +38,16 @@ h2 {
   font-size: 1.15rem;
   margin-top: 1rem; }
 
-ul, ol {
+ul,
+ol {
   margin-top: 0;
   padding-top: 0; }
-  ul li, ol li {
+  ul li,
+  ol li {
     padding: .2rem; }
 
 ul {
   list-style: none; }
-
-.centrado-logo-texto {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center; }
 
 .contenedor, .contenedor-01, .contenedor-02 {
   width: 90%;
@@ -49,6 +63,9 @@ ul {
   grid-template-rows: auto 1fr auto;
   grid-gap: 1rem;
   padding-bottom: 4rem; }
+
+.contenedor-02 {
+  text-align: center; }
 
 .borde-01 {
   border: 2px solid gray;
@@ -76,10 +93,36 @@ section {
 
 form {
   margin-bottom: 1rem; }
-  form input[type="text"][id*="mascota-nombre"] {
-    width: 10ch; }
-  form input[type="number"][id*="mascota-edad"] {
-    width: 4ch; }
+  form input[type="text"],
+  form input[type="tel"],
+  form select,
+  form option {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 0.15rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box; }
+    form input[type="text"][id="numero-mascotas"],
+    form input[type="tel"][id="numero-mascotas"],
+    form select[id="numero-mascotas"],
+    form option[id="numero-mascotas"] {
+      width: 4ch; }
+    form input[type="text"][id^="mascota-edad"],
+    form input[type="tel"][id^="mascota-edad"],
+    form select[id^="mascota-edad"],
+    form option[id^="mascota-edad"] {
+      width: 3ch; }
+  form input[type="submit"] {
+    background-color: gray;
+    color: black;
+    border: none;
+    padding: 0.5rem 0.5rem;
+    cursor: pointer; }
+    form input[type="submit"]:hover {
+      background-color: #404040; }
 
 input#cliente-nombre,
 input#cliente-telefono {
@@ -92,51 +135,28 @@ input#cliente-nombre {
 input#cliente-telefono {
   width: 15ch; }
 
-input[type="text"],
-input[type="tel"],
-select,
-option {
-  background-color: #333;
-  color: white;
-  border: 1px solid #555;
-  padding: 0.15rem;
-  margin-bottom: 0.5rem;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box; }
+input[id^="mascota-nombre"] {
+  max-width: 10ch; }
 
-select#servicios-elegidos {
-  width: 10ch; }
+select[id^="servicio"] {
+  max-width: 15ch; }
 
-input[type="submit"] {
-  background-color: gray;
-  color: black;
-  border: none;
-  padding: 0.5rem 0.5rem;
-  cursor: pointer; }
-  input[type="submit"]:hover {
-    background-color: #404040; }
-
-input {
-  background-color: #333;
-  color: white;
-  border: 1px solid #555;
-  padding: 0.1rem; }
-
-@media (min-width: 992px) {
-  .contenedor-01,
-  .contenedor-02,
-  .contenedor-03 {
-    max-width: 960px; } }
-@media (min-width: 1200px) {
-  .contenedor-01,
-  .contenedor-02,
-  .contenedor-03 {
-    max-width: 1140px; } }
-@media (min-width: 1400px) {
-  .contenedor-01,
-  .contenedor-02,
-  .contenedor-03 {
-    max-width: 1320px; } }
+@media (max-width: 767px) {
+  .contenedor-01 {
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto; } }
+@media (min-width: 768px) and (max-width: 991px) {
+  .contenedor-01 {
+    max-width: 750px; } }
+@media (min-width: 992px) and (max-width: 1199px) {
+  .contenedor-01 {
+    max-width: 970px; } }
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .contenedor-01 {
+    max-width: 1170px; } }
+@media (min-width: 1440px) {
+  .contenedor-01 {
+    max-width: 1440px; } }
 
 /*# sourceMappingURL=style.css.map */

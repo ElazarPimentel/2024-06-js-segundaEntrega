@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v24
+// v31
 
 const servicios = {
     1: "Bañado y Peinado",
@@ -69,9 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarHorariosList();
 
     // Event listeners
-    document.getElementById("save-cliente").addEventListener("click", guardarCliente);
-    document.getElementById("next-step-pets").addEventListener("click", mostrarFormulariosMascotas);
-    document.getElementById("clear-data").addEventListener("click", borrarTodosDatos);
+    document.getElementById("guardar-cliente").addEventListener("click", guardarCliente);
+    document.getElementById("siguiente-mascota").addEventListener("click", mostrarFormulariosMascotas);
+    document.getElementById("borrar-datos").addEventListener("click", borrarTodosDatos);
+    document.getElementById("guardar-mascotas-turnos").addEventListener("click", guardarMascotasYTurnos);
 
     // Initial DOM update
     actualizarDOM();
@@ -79,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Llenar listas
 function actualizarServiciosList() {
-    const serviciosList = document.getElementById("servicios-list");
+    const serviciosList = document.getElementById("servicios-listado");
     serviciosList.innerHTML = '';
     Object.entries(servicios).forEach(([id, nombre]) => {
         const li = document.createElement("li");
@@ -89,7 +90,7 @@ function actualizarServiciosList() {
 }
 
 function actualizarHorariosList() {
-    const horariosList = document.getElementById("horarios-list");
+    const horariosList = document.getElementById("horarios-listado");
     horariosList.innerHTML = '';
     Object.entries(horarios).forEach(([dia, horas]) => {
         const li = document.createElement("li");
@@ -104,14 +105,14 @@ function guardarCliente() {
     const telefono = document.getElementById("cliente-telefono").value;
     cliente = new Cliente(null, nombre, telefono);
     localStorage.setItem('cliente', JSON.stringify(cliente));
-    document.getElementById("form-pets-info").style.display = "block";
+    document.getElementById("formulario-mascotas-info").style.display = "block";
 }
 
 function mostrarFormulariosMascotas() {
-    const numPets = parseInt(document.getElementById("num-pets").value);
+    const numPets = parseInt(document.getElementById("numero-mascotas").value);
     const fecha = document.getElementById("turno-fecha").value;
     const hora = document.getElementById("turno-hora").value;
-    const petsForms = document.getElementById("pets-forms");
+    const petsForms = document.getElementById("mascotas-formulario");
     petsForms.innerHTML = '';
 
     for (let i = 0; i < numPets; i++) {
@@ -122,8 +123,8 @@ function mostrarFormulariosMascotas() {
                 <legend>Datos de la Mascota ${i + 1}</legend>
                 <label for="mascota-nombre-${i}">Nombre de mascota:</label>
                 <input type="text" id="mascota-nombre-${i}" name="mascota-nombre-${i}" required aria-label="Nombre de la Mascota ${i + 1}">
-                <label for="mascota-edad-${i}">Edad (en años):</label>
-                <input type="number" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
+                <label for="mascota-edad-${i}">Edad (años):</label>
+                <input type="text" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
                 <label for="servicio-${i}">Servicio</label>
                 <select id="servicio-${i}" required aria-label="Servicio para la Mascota ${i + 1}">
                     ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombre}</option>`).join('')}
@@ -133,10 +134,8 @@ function mostrarFormulariosMascotas() {
         petsForms.appendChild(petForm);
     }
 
-    const savePetsButton = document.createElement("button");
-    savePetsButton.textContent = "Guardar Mascotas y Turnos";
-    savePetsButton.addEventListener("click", () => guardarMascotasYTurnos(numPets, fecha, hora));
-    petsForms.appendChild(savePetsButton);
+    document.getElementById("guardar-mascotas-turnos").style.display = "block";
+    document.getElementById("guardar-mascotas-turnos").addEventListener("click", () => guardarMascotasYTurnos(numPets, fecha, hora));
 
     petsForms.style.display = "block";
 }
@@ -158,18 +157,23 @@ function guardarMascotasYTurnos(numPets, fecha, hora) {
     localStorage.setItem('mascotas', JSON.stringify(mascotas));
     localStorage.setItem('turnos', JSON.stringify(turnos));
     actualizarDOM();
+    document.getElementById("seccion-salida-datos").style.display = "block";  // Ensure the section is visible
 }
 
 function actualizarDOM() {
+    // Clear existing DOM elements
+    document.getElementById('cliente-detalles').innerHTML = '';
+    document.getElementById('mascota-detalles').innerHTML = '';
+
     if (cliente) {
         let clienteDetails = document.getElementById('cliente-detalles');
         if (!clienteDetails) {
             clienteDetails = document.createElement('div');
             clienteDetails.id = 'cliente-detalles';
-            document.getElementById("form-cliente").insertAdjacentElement('afterend', clienteDetails);
+            document.getElementById("formulario-cliente").insertAdjacentElement('afterend', clienteDetails);
         }
 
-        clienteDetails.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p>Teléfono: ${cliente.clienteTelefono}</p>`;
+        clienteDetails.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;
     }
 
     let mascotaDetails = document.getElementById("mascota-detalles");
@@ -179,18 +183,21 @@ function actualizarDOM() {
         document.getElementById("seccion-salida-datos").appendChild(mascotaDetails);
     }
     mascotaDetails.innerHTML = '';
-    turnos.forEach(turno => {
+
+    let fechaPrimeraVezTexto = "";
+    turnos.forEach((turno, index) => {
         const mascota = mascotas.find(m => m.mascotaId === turno.turnoForeignMascotaId);
         const servicio = servicios[turno.turnoForeignServicioId];
         const turnoInfo = document.createElement('div');
-        turnoInfo.innerHTML = `
-            <h3>Mascota: ${mascota.mascotaNombre} (${mascota.mascotaEdad} años)</h3>
-            <p>Fecha: ${turno.turnoFecha}</p>
-            <p>Hora: ${turno.turnoHora}</p>
-            <p>Servicio: ${servicio}</p>
-        `;
+
+        if (index === 0) {
+            fechaPrimeraVezTexto = `<p><strong>Fecha</strong>: ${turno.turnoFecha}</p>`;
+        }
+
+        turnoInfo.innerHTML = `${index === 0 ? fechaPrimeraVezTexto : ""}<p><strong>Hora</strong>: ${turno.turnoHora} <strong>Mascota</strong>: ${mascota.mascotaNombre} (${mascota.mascotaEdad} año/s) <strong>Servicio</strong>: ${servicio}</p>`;
         mascotaDetails.appendChild(turnoInfo);
     });
+
 }
 
 // Borrar todo
@@ -200,4 +207,11 @@ function borrarTodosDatos() {
     mascotas = [];
     turnos = [];
     actualizarDOM();
+    document.getElementById("formulario-cliente").reset();
+    document.getElementById("formulario-mascotas-info").style.display = "none";
+    document.getElementById("mascotas-formulario").style.display = "none";
+    document.getElementById("guardar-mascotas-turnos").style.display = "none";
+    document.getElementById("cliente-detalles").innerHTML = '';
+    document.getElementById("mascota-detalles").innerHTML = '';
+    document.getElementById("seccion-salida-datos").style.display = "none";  
 }
