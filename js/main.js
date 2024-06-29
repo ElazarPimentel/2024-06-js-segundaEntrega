@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Alessio Aguirre Pimentel
-// v31
+// v32
 
 const servicios = {
     1: "Bañado y Peinado",

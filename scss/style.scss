@@ -1,6 +1,6 @@
 // Nombre del archivo: scss/style.scss
 // Alessio Aguirre Pimentel
-// v31
+// v33
 
 // Variables
 $fuente-color: gray;
@@ -142,8 +142,7 @@ form {
         border: 1px solid $input-borde-color;
         padding: 0.15rem;
         margin-bottom: 0.5rem;
-        width: 100%;
-        max-width: 300px;
+
         box-sizing: border-box;
 
         &[id="numero-mascotas"] {
@@ -151,7 +150,7 @@ form {
         }
 
         &[id^="mascota-edad"] {
-            width: 3ch; //ver
+            width: 3ch;
         }
     }
 
@@ -163,7 +162,7 @@ form {
         cursor: pointer;
 
         &:hover {
-            background-color: darken($fuente-color, 25%); //ver
+            background-color: darken($fuente-color, 25%);
         }
     }
 }
@@ -187,7 +186,7 @@ input[id^="mascota-nombre"] {
 }
 
 select[id^="servicio"] {
-    max-width: 15ch;
+    max-width: 20ch;
 }
 
 // Media queries rango - arreglar responsive

@@ -102,8 +102,6 @@ form {
     border: 1px solid #555;
     padding: 0.15rem;
     margin-bottom: 0.5rem;
-    width: 100%;
-    max-width: 300px;
     box-sizing: border-box; }
     form input[type="text"][id="numero-mascotas"],
     form input[type="tel"][id="numero-mascotas"],
@@ -139,7 +137,7 @@ input[id^="mascota-nombre"] {
   max-width: 10ch; }
 
 select[id^="servicio"] {
-  max-width: 15ch; }
+  max-width: 20ch; }
 
 @media (max-width: 767px) {
   .contenedor-01 {
