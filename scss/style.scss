@@ -1,23 +1,47 @@
 // Nombre del archivo: scss/style.scss
-// Alessio Aguirre Pimentel
-// v33
+// Autor: Alessio Aguirre Pimentel
+// Version: 36
+// Descripción: Este archivo contiene los estilos principales para la aplicación de gestión de turnos de la Veterinaria Pata-Pata-Gonia.
 
 // Variables
-$fuente-color: gray;
-$background-color: black;
-$fuente-color-title: white;
-$borde-color-brillante: white;
-$borde-color-medio: gray;
-$input-fondo-color: #333;
-$input-texto-color: white;
-$input-borde-color: #555;
+$fuente-color-dark: rgb(180, 178, 178);
+$background-color-dark: black;
+$fuente-color-dark-title: white;
+$borde-color-dark-brillante: white;
+$borde-color-dark-medio: gray;
+$input-fondo-color-dark: #333;
+$input-texto-color-dark: white;
+$input-borde-color-dark: #555;
 
 body {
-    color: $fuente-color;
-    background-color: $background-color;
+    color: $fuente-color-dark;
+    background-color: $background-color-dark;
     font-size: 16px;
     padding: 0;
     margin: 0;
+
+    &[data-theme="light"] {
+        color: black;
+        background-color: white;
+
+        input[type="text"],
+        input[type="tel"],
+        select,
+        option {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background-color: black;
+            color: white;
+
+            &:hover {
+                background-color: darken(black, 25%);
+            }
+        }
+    }
 }
 
 header {
@@ -36,12 +60,12 @@ header {
     }
 
     img {
-        max-width: 100%;
+        max-width: 70%;
         height: auto;
     }
 
     h1 {
-        font-size: 1.18rem;
+        font-size: 1.2rem;
         text-align: center;
     }
 }
@@ -49,7 +73,7 @@ header {
 .sitio-titulo {
     font-weight: bold;
     font-size: 1.5rem;
-    color: $fuente-color;
+    color: $fuente-color-dark;
 }
 
 h1 {
@@ -58,7 +82,7 @@ h1 {
 }
 
 h2 {
-    color: $fuente-color-title;
+    color: $fuente-color-dark-title;
     font-size: 1.15rem;
     margin-top: 1rem;
 }
@@ -82,7 +106,7 @@ ul {
     padding: 0 0.75rem;
     margin: 1rem auto;
     box-sizing: border-box;
-    border: 2px solid $borde-color-brillante;
+    border: 2px solid $borde-color-dark-brillante;
     border-radius: 10px;
 }
 
@@ -93,6 +117,11 @@ ul {
     grid-template-rows: auto 1fr auto;
     grid-gap: 1rem;
     padding-bottom: 4rem;
+
+    @media (max-width: 767px) {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
 }
 
 .contenedor-02 {
@@ -101,7 +130,7 @@ ul {
 }
 
 .borde-01 {
-    border: 2px solid $borde-color-medio;
+    border: 2px solid $borde-color-dark-medio;
     border-radius: 10px;
     padding: .5rem;
 }
@@ -110,14 +139,9 @@ section {
     margin-top: 1rem;
 }
 
-#seccion-servicios {
+#información-general {
     grid-column: 1 / 2;
-    grid-row: 1 / 2;
-}
-
-#seccion-horarios {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
+    grid-row: 1 / 3; // Adjust based on layout
 }
 
 #seccion-turnos {
@@ -125,9 +149,11 @@ section {
     grid-row: 1 / 3;
 }
 
-#seccion-salida-datos {
-    grid-column: 2 / 3;
-    grid-row: 3 / 3;
+#seccion-salida-datos-dos {
+    border: 2px solid $borde-color-dark-medio;
+    border-radius: 10px;
+    padding: .5rem;
+    margin-top: 1rem;
 }
 
 form {
@@ -137,9 +163,9 @@ form {
     input[type="tel"],
     select,
     option {
-        background-color: $input-fondo-color;
-        color: $input-texto-color;
-        border: 1px solid $input-borde-color;
+        background-color: $input-fondo-color-dark;
+        color: $input-texto-color-dark;
+        border: 1px solid $input-borde-color-dark;
         padding: 0.15rem;
         margin-bottom: 0.5rem;
 
@@ -155,15 +181,19 @@ form {
     }
 
     input[type="submit"] {
-        background-color: $fuente-color;
-        color: $background-color;
+        background-color: $fuente-color-dark;
+        color: $background-color-dark;
         border: none;
         padding: 0.5rem 0.5rem;
         cursor: pointer;
 
         &:hover {
-            background-color: darken($fuente-color, 25%);
+            background-color: darken($fuente-color-dark, 25%);
         }
+    }
+
+    button {
+        display: inline-block;
     }
 }
 

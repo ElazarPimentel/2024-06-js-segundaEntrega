@@ -1,6 +1,7 @@
 // Nombre del archivo: js/main.js
-// Alessio Aguirre Pimentel
-// v32
+// Autor: Alessio Aguirre Pimentel
+// Version: 36
+// Descripción: Este archivo contiene la lógica principal para la aplicación de gestión de turnos de la Veterinaria Pata-Pata-Gonia.
 
 const servicios = {
     1: "Bañado y Peinado",
@@ -72,10 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("guardar-cliente").addEventListener("click", guardarCliente);
     document.getElementById("siguiente-mascota").addEventListener("click", mostrarFormulariosMascotas);
     document.getElementById("borrar-datos").addEventListener("click", borrarTodosDatos);
-    document.getElementById("guardar-mascotas-turnos").addEventListener("click", guardarMascotasYTurnos);
+    document.getElementById("guardar-mascotas-turnos").addEventListener("click", () => guardarMascotasYTurnos());
+    document.getElementById("theme-toggle").addEventListener("click", toggleTheme);
 
     // Initial DOM update
     actualizarDOM();
+    aplicarTema();
 });
 
 // Llenar listas
@@ -94,7 +97,7 @@ function actualizarHorariosList() {
     horariosList.innerHTML = '';
     Object.entries(horarios).forEach(([dia, horas]) => {
         const li = document.createElement("li");
-        li.textContent = `${dia}: ${horas}`;
+        li.innerHTML = `<strong>${dia}</strong>: ${horas}`;
         horariosList.appendChild(li);
     });
 }
@@ -134,14 +137,17 @@ function mostrarFormulariosMascotas() {
         petsForms.appendChild(petForm);
     }
 
-    document.getElementById("guardar-mascotas-turnos").style.display = "block";
-    document.getElementById("guardar-mascotas-turnos").addEventListener("click", () => guardarMascotasYTurnos(numPets, fecha, hora));
-
-    petsForms.style.display = "block";
+    petsForms.style.display = "block"; // Make the mascotas-formulario div visible
+    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
+    document.getElementById("borrar-datos").style.display = "inline-block";
 }
 
-function guardarMascotasYTurnos(numPets, fecha, hora) {
+function guardarMascotasYTurnos() {
+    const numPets = parseInt(document.getElementById("numero-mascotas").value);
+    const fecha = document.getElementById("turno-fecha").value;
+    const hora = document.getElementById("turno-hora").value;
     let turnoHora = new Date(`${fecha}T${hora}`);
+
     for (let i = 0; i < numPets; i++) {
         const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
         const mascotaEdad = document.getElementById(`mascota-edad-${i}`).value;
@@ -157,32 +163,25 @@ function guardarMascotasYTurnos(numPets, fecha, hora) {
     localStorage.setItem('mascotas', JSON.stringify(mascotas));
     localStorage.setItem('turnos', JSON.stringify(turnos));
     actualizarDOM();
-    document.getElementById("seccion-salida-datos").style.display = "block";  // Ensure the section is visible
+    document.getElementById("seccion-salida-datos-dos").style.display = "block";  // Ensure the new section is visible
 }
 
 function actualizarDOM() {
+    const clienteDetalles = document.getElementById('cliente-detalles');
+    const mascotaDetalles = document.getElementById('mascota-detalles');
+
+    if (!clienteDetalles || !mascotaDetalles) {
+        console.error("Required elements are missing from the DOM.");
+        return;
+    }
+
     // Clear existing DOM elements
-    document.getElementById('cliente-detalles').innerHTML = '';
-    document.getElementById('mascota-detalles').innerHTML = '';
+    clienteDetalles.innerHTML = '';
+    mascotaDetalles.innerHTML = '';
 
     if (cliente) {
-        let clienteDetails = document.getElementById('cliente-detalles');
-        if (!clienteDetails) {
-            clienteDetails = document.createElement('div');
-            clienteDetails.id = 'cliente-detalles';
-            document.getElementById("formulario-cliente").insertAdjacentElement('afterend', clienteDetails);
-        }
-
-        clienteDetails.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;
+        clienteDetalles.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;
     }
-
-    let mascotaDetails = document.getElementById("mascota-detalles");
-    if (!mascotaDetails) {
-        mascotaDetails = document.createElement('div');
-        mascotaDetails.id = 'mascota-detalles';
-        document.getElementById("seccion-salida-datos").appendChild(mascotaDetails);
-    }
-    mascotaDetails.innerHTML = '';
 
     let fechaPrimeraVezTexto = "";
     turnos.forEach((turno, index) => {
@@ -195,9 +194,8 @@ function actualizarDOM() {
         }
 
         turnoInfo.innerHTML = `${index === 0 ? fechaPrimeraVezTexto : ""}<p><strong>Hora</strong>: ${turno.turnoHora} <strong>Mascota</strong>: ${mascota.mascotaNombre} (${mascota.mascotaEdad} año/s) <strong>Servicio</strong>: ${servicio}</p>`;
-        mascotaDetails.appendChild(turnoInfo);
+        mascotaDetalles.appendChild(turnoInfo);
     });
-
 }
 
 // Borrar todo
@@ -211,7 +209,17 @@ function borrarTodosDatos() {
     document.getElementById("formulario-mascotas-info").style.display = "none";
     document.getElementById("mascotas-formulario").style.display = "none";
     document.getElementById("guardar-mascotas-turnos").style.display = "none";
-    document.getElementById("cliente-detalles").innerHTML = '';
-    document.getElementById("mascota-detalles").innerHTML = '';
-    document.getElementById("seccion-salida-datos").style.display = "none";  
+    document.getElementById("borrar-datos").style.display = "none";
+    document.getElementById("seccion-salida-datos-dos").style.display = "none";
+}
+
+function toggleTheme() {
+    const theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.body.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+}
+
+function aplicarTema() {
+    const storedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.dataset.theme = storedTheme;
 }

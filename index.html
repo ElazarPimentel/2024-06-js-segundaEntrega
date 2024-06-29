@@ -1,6 +1,6 @@
 <!-- file name: index.html 
 Alumno: Alessio Aguirre Pimentel
-Version 33 -->
+Version 36 -->
 
 <!DOCTYPE html>
 <html lang="es">
@@ -23,19 +23,16 @@ Version 33 -->
             <h1>Bienvenido! en la veterinaria <em>Pata-Pata-Gonia</em></h1>
         </div>
         <div id="header-derecha">
-            <!-- theme soon -->
+            <button id="theme-toggle">Cambiar colores</button>
         </div>
     </header>
 
     <main class="contenedor-01">
-        <section class="borde-01" id="seccion-servicios">
+        <section class="borde-01" id="información-general">
             <h2>Nuestros servicios</h2>
             <ul id="servicios-listado">
                 <!-- servicios llenar con JS -->
             </ul>
-        </section>
-
-        <section class="borde-01" id="seccion-horarios">
             <h2>Nuestros horarios de atención</h2>
             <ul id="horarios-listado">
                 <!-- horarios llenar con JS -->
@@ -70,18 +67,13 @@ Version 33 -->
             </form>
             <div id="mascotas-formulario" style="display:none;"></div>
             <button id="guardar-mascotas-turnos" style="display:none;">Guardar Mascotas y Turnos</button>
-        </section>
-
-        <section class="borde-01" id="seccion-salida-datos" style="display:none;">
-            <!-- Detalles de cliente  -->
-            <div id="cliente-detalles"></div>
-            <!-- Detalles de mascotas y turnos -->
-            <div id="mascota-detalles"></div>
-        </section>
-
-        <!-- Borrar todo -->
-        <section class="borde-01" id="seccion-borrar-datos">
-            <button id="borrar-datos">Comenzar de nuevo</button>
+            <button id="borrar-datos" style="display:none;">Comenzar de nuevo</button>
+            <div class="borde-01" id="seccion-salida-datos-dos" style="display:none;">
+                <!-- Detalles de cliente -->
+                <div id="cliente-detalles"></div>
+                <!-- Detalles de mascotas y turnos -->
+                <div id="mascota-detalles"></div>
+            </div>
         </section>
     </main>
 
