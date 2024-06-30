@@ -1,7 +1,67 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 39
-// Descripción: Este archivo contiene la lógica principal para la aplicación de gestión de turnos de la Veterinaria Pata-Pata-Gonia.
+// Versión: 40
+
+// Variables y constantes globales
+const servicios = {
+    1: "Bañado y Peinado",
+    2: "Vacunación",
+    3: "Chequeo General",
+    4: "Quitar pulgas"
+};
+
+const horarios = {
+    Lunes: "9:00 - 17:00",
+    Martes: "9:00 - 17:00",
+    Miércoles: "9:00 - 17:00",
+    Jueves: "9:00 - 17:00",
+    Viernes: "9:00 - 17:00",
+    Sábado: "9:00 - 13:00",
+    Domingo: "Guardia"
+};
+
+let cliente = null;
+let mascotas = [];
+let turnos = [];
+
+
+
+// Administración Local Storage. Parámetro accion para usar una sola función
+const gestionarLocalStorage = (accion, clave, valor = null) => {
+    try {
+        switch (accion) {
+            case "guardar":
+                const fechaExp = new Date();
+                fechaExp.setDate(fechaExp.getDate() + 45);
+                localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
+                break;
+            case "cargar":
+                const item = JSON.parse(localStorage.getItem(clave));
+                if (item && new Date(item.fechaExp) > new Date()) {
+                    return item.valor;
+                } else {
+                    localStorage.removeItem(clave);
+                    return null;
+                }
+            case "borrar":
+                localStorage.removeItem(clave);
+                break;
+            case "borrarTodo":
+                localStorage.clear();
+                break;
+            default:
+                throw new Error("Acción no reconocida");
+        }
+    } catch (error) {
+        console.error(`Error al ${accion} en local storage`, error);
+        return null;
+    }
+};
+
+//Llenar con datos luego de función gestionarLocalStorage
+cliente = gestionarLocalStorage("cargar", "cliente") || null; //null por ser objeto
+mascotas = gestionarLocalStorage("cargar", "mascotas") || [];
+turnos = gestionarLocalStorage("cargar", "turnos") || [];
 
 // Definición de clases
 class Cliente {
@@ -43,60 +103,6 @@ class Turno {
     }
 }
 
-// Administración de Local Storage. Parámetro accion para usar una sola función
-const gestionarLocalStorage = (accion, clave, valor = null) => {
-    try {
-        switch (accion) {
-            case "guardar":
-                const fechaExp = new Date();
-                fechaExp.setDate(fechaExp.getDate() + 45);
-                localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
-                break;
-            case "cargar":
-                const item = JSON.parse(localStorage.getItem(clave));
-                if (item && new Date(item.fechaExp) > new Date()) {
-                    return item.valor;
-                } else {
-                    localStorage.removeItem(clave);
-                    return null;
-                }
-            case "borrar":
-                localStorage.removeItem(clave);
-                break;
-            case "borrarTodo":
-                localStorage.clear();
-                break;
-            default:
-                throw new Error("Acción no reconocida");
-        }
-    } catch (error) {
-        console.error(`Error al ${accion} en local storage`, error);
-        return null;
-    }
-};
-
-// Variables y constantes globales
-const servicios = {
-    1: "Bañado y Peinado",
-    2: "Vacunación",
-    3: "Chequeo General",
-    4: "Quitar pulgas"
-};
-
-const horarios = {
-    Lunes: "9:00 - 17:00",
-    Martes: "9:00 - 17:00",
-    Miércoles: "9:00 - 17:00",
-    Jueves: "9:00 - 17:00",
-    Viernes: "9:00 - 17:00",
-    Sábado: "9:00 - 13:00",
-    Domingo: "Guardia"
-};
-
-let cliente = gestionarLocalStorage("cargar", "cliente") || null;
-let mascotas = gestionarLocalStorage("cargar", "mascotas") || [];
-let turnos = gestionarLocalStorage("cargar", "turnos") || [];
-
 // Listeners de eventos
 document.addEventListener("DOMContentLoaded", () => {
     actualizarServiciosList();
@@ -118,13 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleTema();
         }
     });
-
+    //se carga x primera vez
     actualizarDOM();
     aplicarTema();
 });
 
-// Funciones relacionadas con la actualización del DOM y la lógica de la aplicación
-
+// Funciones relacionadas con la actualización del DOM y lógica de app
 const actualizarServiciosList = () => {
     try {
         const serviciosList = document.getElementById("servicios-listado");
@@ -135,7 +140,7 @@ const actualizarServiciosList = () => {
             serviciosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error al actualizar la lista de servicios', error);
+        console.error('Error actualizar lista servicoios', error);
     }
 };
 
@@ -149,7 +154,7 @@ const actualizarHorariosList = () => {
             horariosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error al actualizar la lista de horarios', error);
+        console.error('Error actualizar lista horarios', error);
     }
 };
 
@@ -161,7 +166,7 @@ const guardarCliente = () => {
         gestionarLocalStorage("guardar", "cliente", cliente);
         document.getElementById("formulario-mascotas-info").style.display = "block";
     } catch (error) {
-        console.error('Error al guardar el cliente', error);
+        console.error('Error guardar cliente', error);
     }
 };
 

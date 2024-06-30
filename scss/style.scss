@@ -1,7 +1,7 @@
 // Nombre del archivo: scss/style.scss
 // Autor: Alessio Aguirre Pimentel
-// Version: 39
-// Descripción: Este archivo contiene los estilos principales para la aplicación de gestión de turnos de la Veterinaria Pata-Pata-Gonia.
+// Version: 40
+
 
 // Variables
 $fuente-color-dark: rgb(180, 178, 178);
@@ -133,6 +133,12 @@ ul {
     border: 2px solid $borde-color-dark-medio;
     border-radius: 10px;
     padding: .5rem;
+}
+
+legend {
+    border: 1px solid $borde-color-dark-medio;
+    border-radius: 10px;
+    padding: 5px 10px;
 }
 
 section {
