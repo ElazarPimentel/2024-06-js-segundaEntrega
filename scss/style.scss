@@ -221,7 +221,10 @@ select[id^="servicio"] {
 
 // Media queries rango - arreglar responsive
 @media (max-width: 767px) {
-    .contenedor-01 {
+
+    .contenedor-01,
+    .contenedor-02,
+    .contenedor {
         max-width: 100%;
         grid-template-columns: 1fr;
         grid-template-rows: auto;
@@ -229,25 +232,37 @@ select[id^="servicio"] {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .contenedor-01 {
+
+    .contenedor-01,
+    .contenedor-02,
+    .contenedor {
         max-width: 750px;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-    .contenedor-01 {
+
+    .contenedor-01,
+    .contenedor-02,
+    .contenedor {
         max-width: 970px;
     }
 }
 
 @media (min-width: 1200px) and (max-width: 1439px) {
-    .contenedor-01 {
+
+    .contenedor-01,
+    .contenedor-02,
+    .contenedor {
         max-width: 1170px;
     }
 }
 
 @media (min-width: 1440px) {
-    .contenedor-01 {
+
+    .contenedor-01,
+    .contenedor-02,
+    .contenedor {
         max-width: 1440px;
     }
 }
