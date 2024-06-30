@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 40
+// Versión: 41
 
 // Variables y constantes globales
 const servicios = {
@@ -24,18 +24,16 @@ let cliente = null;
 let mascotas = [];
 let turnos = [];
 
-
-
-// Administración Local Storage. Parámetro accion para usar una sola función
 const gestionarLocalStorage = (accion, clave, valor = null) => {
     try {
         switch (accion) {
-            case "guardar":
+            case "guardar": {
                 const fechaExp = new Date();
                 fechaExp.setDate(fechaExp.getDate() + 45);
                 localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
                 break;
-            case "cargar":
+            }
+            case "cargar": {
                 const item = JSON.parse(localStorage.getItem(clave));
                 if (item && new Date(item.fechaExp) > new Date()) {
                     return item.valor;
@@ -43,14 +41,18 @@ const gestionarLocalStorage = (accion, clave, valor = null) => {
                     localStorage.removeItem(clave);
                     return null;
                 }
-            case "borrar":
+            }
+            case "borrar": {
                 localStorage.removeItem(clave);
                 break;
-            case "borrarTodo":
+            }
+            case "borrarTodo": {
                 localStorage.clear();
                 break;
-            default:
+            }
+            default: {
                 throw new Error("Acción no reconocida");
+            }
         }
     } catch (error) {
         console.error(`Error al ${accion} en local storage`, error);
@@ -58,59 +60,55 @@ const gestionarLocalStorage = (accion, clave, valor = null) => {
     }
 };
 
-//Llenar con datos luego de función gestionarLocalStorage
-cliente = gestionarLocalStorage("cargar", "cliente") || null; //null por ser objeto
+cliente = gestionarLocalStorage("cargar", "cliente") || null;
 mascotas = gestionarLocalStorage("cargar", "mascotas") || [];
 turnos = gestionarLocalStorage("cargar", "turnos") || [];
 
-// Definición de clases
 class Cliente {
     constructor(clienteId, clienteNombre, clienteTelefono) {
-        this.clienteId = clienteId || this.generarId('cliente');
+        this.clienteId = clienteId || Cliente.generarId('cliente');
         this.clienteNombre = clienteNombre;
         this.clienteTelefono = clienteTelefono;
     }
 
-    generarId(prefix) {
+    static generarId(prefix) {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 
 class Mascota {
     constructor(mascotaId, mascotaForeignClienteId, mascotaNombre, mascotaEdad) {
-        this.mascotaId = mascotaId || this.generarId('mascota');
+        this.mascotaId = mascotaId || Mascota.generarId('mascota');
         this.mascotaForeignClienteId = mascotaForeignClienteId;
         this.mascotaNombre = mascotaNombre;
         this.mascotaEdad = mascotaEdad;
     }
 
-    generarId(prefix) {
+    static generarId(prefix) {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 
 class Turno {
     constructor(turnoId, turnoForeignMascotaId, turnoFecha, turnoHora, turnoForeignServicioId) {
-        this.turnoId = turnoId || this.generarId('turno');
+        this.turnoId = turnoId || Turno.generarId('turno');
         this.turnoForeignMascotaId = turnoForeignMascotaId;
         this.turnoFecha = turnoFecha;
         this.turnoHora = turnoHora;
         this.turnoForeignServicioId = turnoForeignServicioId;
     }
 
-    generarId(prefix) {
+    static generarId(prefix) {
         return `${prefix}_` + Math.random().toString(36).slice(2, 11);
     }
 }
 
-// Listeners de eventos
 document.addEventListener("DOMContentLoaded", () => {
     actualizarServiciosList();
     actualizarHorariosList();
 
-    // Delegar eventos botones de formularios
     document.body.addEventListener("click", (event) => {
-        const targetId = event.target.id;
+        const { id: targetId } = event.target;
 
         if (targetId === "guardar-cliente") {
             guardarCliente();
@@ -124,12 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleTema();
         }
     });
-    //se carga x primera vez
     actualizarDOM();
     aplicarTema();
 });
 
-// Funciones relacionadas con la actualización del DOM y lógica de app
 const actualizarServiciosList = () => {
     try {
         const serviciosList = document.getElementById("servicios-listado");
@@ -140,7 +136,7 @@ const actualizarServiciosList = () => {
             serviciosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error actualizar lista servicoios', error);
+        console.error('Error actualizar lista servicios', error);
     }
 };
 
