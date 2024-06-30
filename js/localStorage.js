@@ -1,6 +1,6 @@
 // Nombre del archivo: js/localStorage.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 42
+// Versión: 47
 
 export const gestionarLocalStorage = (accion, clave, valor = null) => {
     try {
