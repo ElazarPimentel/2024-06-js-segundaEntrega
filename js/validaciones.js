@@ -2,7 +2,7 @@
 // Autor: Alessio Aguirre Pimentel
 // Versión: 47
 
-// Funciones de validación
+// Validación
 export const mostrarError = (elemento, mensaje) => {
     let error = elemento.nextElementSibling;
     if (!error || !error.classList.contains('error')) {
@@ -24,7 +24,7 @@ export const validarNombre = (nombre) => /^[a-zA-Z\s]{2,25}$/.test(nombre);
 export const validarTelefono = (telefono) => /^[0-9+\-().\s]{7,20}$/.test(telefono);
 export const validarNumeroMascotas = (num) => /^[1-3]$/.test(num);
 
-// Asegurarse de que la fecha del turno sea válida y esté dentro de los próximos 45 días
+// Tunrno dentro de los próximos 45 dias
 export const validarFecha = (fecha) => {
     const now = new Date();
     const fechaTurno = new Date(fecha + "T00:00:00"); // Asegurarse de que se parsee solo la fecha
@@ -32,15 +32,15 @@ export const validarFecha = (fecha) => {
     return fechaTurno > now && diff <= 45;
 };
 
-// Asegurarse de que el día del turno sea un día hábil (de lunes a viernes)
+// En versiones verificar contra array horarios[]
 export const validarDiaAbierto = (fecha) => {
     const dia = new Date(fecha + "T00:00:00").getDay(); // Asegurarse de que se parsee solo la fecha
     return dia >= 1 && dia <= 5; // 1=Lunes, 5=Viernes
 };
 
-// Asegurarse de que la hora del turno sea válida y esté dentro del horario de atención
+// Hora del turno sea válida y esté dentro del horario de atención
 export const validarHora = (fecha, hora, horarios, numeroDeMascotas) => {
-    const dia = new Date(fecha + "T00:00:00").getDay(); // Asegurarse de que se parsee solo la fecha
+    const dia = new Date(fecha + "T00:00:00").getDay(); 
     const horario = horarios[Object.keys(horarios)[dia - 1]];
     if (!horario || horario === 'Cerrado') return false;
 
@@ -55,29 +55,32 @@ export const validarHora = (fecha, hora, horarios, numeroDeMascotas) => {
 
     const turnoHora = parseTime(hora);
     const inicio = parseTime(horaInicio);
-    const fin = parseTime(horaFin);
+    const fin = parseTime(horaFin); //Que sea antes del horario de cierre
 
-    // Asegurarse de que numeroDeMascotas sea un número
+    // numeroDeMascotas sea un numreo
     const numeroDeMascotasParsed = parseInt(numeroDeMascotas, 10);
     if (isNaN(numeroDeMascotasParsed)) {
         console.error("Número de mascotas inválido:", numeroDeMascotas);
-        return false;
+
+        return false;//Si
     }
 
-    // Calcular la hora de finalización del último turno (45 minutos por turno)
+    // Hora de finalización del último turno 45 mins antes
     const turnoHoraFinal = new Date(turnoHora.getTime() + 45 * 60000 * numeroDeMascotasParsed);
+    //console.log(turnoHoraFinal)
 
-    console.log("Validando hora:", turnoHora);
-    console.log("Horario de atención:", inicio, "a", fin);
-    console.log("Último turno termina a:", turnoHoraFinal);
 
     return turnoHora >= new Date(Date.now() + 3600000) && turnoHora >= inicio && turnoHoraFinal <= fin;
+
 };
 
-// Validar que la edad de la mascota sea válida y esté dentro del rango permitido
+// Edad mascota rango permitido
 export const validarEdadMascota = (edad) => {
     const edadParsed = parseInt(edad, 10);
-    const isValid = Number.isInteger(edadParsed) && edadParsed >= 0 && edadParsed <= 40;
-    console.log("Validando edad de la mascota:", edad, "Válida:", isValid);
+
+        const isValid = Number.isInteger(edadParsed) && edadParsed >= 0 && edadParsed <= 40;
+
+
+
     return isValid;
 };

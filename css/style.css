@@ -84,6 +84,10 @@ ul {
       grid-template-columns: 1fr;
       grid-template-rows: auto; } }
 
+/* Error para validación de formulario */
+.error {
+  color: white; }
+
 .contenedor-02 {
   text-align: center; }
 
@@ -146,6 +150,12 @@ form {
       background-color: #757272; }
   form button {
     display: inline-block; }
+
+#botones-gardar-borrar {
+  display: flex;
+  justify-content: space-between; }
+  #botones-gardar-borrar button {
+    padding: 0.5rem 1rem; }
 
 input#cliente-nombre,
 input#cliente-telefono {

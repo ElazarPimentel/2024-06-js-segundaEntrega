@@ -2,7 +2,7 @@
 // Autor: Alessio Aguirre Pimentel
 // Versión: 47
 
-export const gestionarLocalStorage = (accion, clave, valor = null) => {
+export const gestionarLocalStorage = (accion, clave, valor = null) => { //Una sola función para todo con parametro accion
     try {
         switch (accion) {
             case "guardar": {
@@ -24,16 +24,16 @@ export const gestionarLocalStorage = (accion, clave, valor = null) => {
                 localStorage.removeItem(clave);
                 break;
             }
-            case "borrarTodo": {
+            case "borrarTodo": { //ver DOM a veces no funciona, raro que sea errático
                 localStorage.clear();
                 break;
             }
             default: {
-                throw new Error("Acción no reconocida");
+                throw new Error("Acción no reconocida");//Versiones futuras manejo complejo
             }
         }
     } catch (error) {
-        console.error(`Error al ${accion} en local storage`, error);
+        console.error(`Error al ${accion} en local storage`, error);//Versiones futuras manejo complejo
         return null;
     }
 };

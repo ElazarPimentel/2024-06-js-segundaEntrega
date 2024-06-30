@@ -1,9 +1,9 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 47
+// Versión: 42
 
 import { gestionarLocalStorage } from './localStorage.js';
-import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js'; // Importar validarEdadMascota
+import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
 import { actualizarServiciosList, actualizarHorariosList, actualizarDOM } from './domUpdates.js';
 
 // Variables y constantes globales
@@ -83,15 +83,17 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (targetId === "siguiente-mascota") {
             mostrarFormulariosMascotas();
         } else if (targetId === "borrar-datos") {
-            borrarTodosDatos();
+            comenzarDeNuevo();
         } else if (targetId === "guardar-mascotas-turnos") {
             guardarMascotasYTurnos();
-        } else if (targetId === "theme-toggle") {
-            toggleTema();
+            // } else if (targetId === "theme-toggle") { Versiones futuras
+            //     toggleTema();
         }
     });
+
     actualizarDOM(cliente, mascotas, turnos, servicios);
     aplicarTema();
+    controlarBotonGuardar();
 });
 
 const guardarCliente = () => {
@@ -101,13 +103,13 @@ const guardarCliente = () => {
     limpiarError(nombre);
     limpiarError(telefono);
 
-    console.log("Validating nombre:", nombre.value); // Debug log for nombre
+
     if (!validarNombre(nombre.value)) {
         mostrarError(nombre, "El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
         return;
     }
 
-    console.log("Validating telefono:", telefono.value); // Debug log for telefono
+
     if (!validarTelefono(telefono.value)) {
         mostrarError(telefono, "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
         return;
@@ -127,25 +129,25 @@ const mostrarFormulariosMascotas = () => {
     limpiarError(fecha);
     limpiarError(hora);
 
-    console.log("Validating numero de mascotas:", numMascotas.value); // Debug log for numMascotas
+
     if (!validarNumeroMascotas(numMascotas.value)) {
         mostrarError(numMascotas, "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
         return;
     }
 
-    console.log("Validating fecha:", fecha.value); // Debug log for fecha
+
     if (!validarFecha(fecha.value)) {
         mostrarError(fecha, "La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
         return;
     }
 
-    console.log("Validating dia abierto:", fecha.value); // Debug log for dia abierto
+
     if (!validarDiaAbierto(fecha.value)) {
         mostrarError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
         return;
     }
 
-    console.log("Validating hora:", hora.value); // Debug log for hora
+
     if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
         mostrarError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
         return;
@@ -189,23 +191,18 @@ const guardarMascotasYTurnos = () => {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = document.getElementById(`mascota-edad-${i}`).value;
             const servicioId = document.getElementById(`servicio-${i}`).value;
+            const mascota = new Mascota(null, cliente.clienteId, mascotaNombre, mascotaEdad);
+            mascotas.push(mascota);
 
-            // Validar nombre de mascota
-            console.log("Validating pet name:", mascotaNombre);
             if (!validarNombre(mascotaNombre)) {
                 mostrarError(document.getElementById(`mascota-nombre-${i}`), "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
                 return;
             }
 
-            // Validar edad de mascota
-            console.log("Validating pet age:", mascotaEdad);
             if (!validarEdadMascota(mascotaEdad)) {
                 mostrarError(document.getElementById(`mascota-edad-${i}`), "La edad de la mascota debe ser un número entre 0 y 40 años.");
                 return;
             }
-
-            const mascota = new Mascota(null, cliente.clienteId, mascotaNombre, mascotaEdad);
-            mascotas.push(mascota);
 
             const turno = new Turno(null, mascota.mascotaId, fecha, turnoHora.toTimeString().slice(0, 5), servicioId);
             turnos.push(turno);
@@ -216,8 +213,9 @@ const guardarMascotasYTurnos = () => {
         gestionarLocalStorage("guardar", "turnos", turnos);
         actualizarDOM(cliente, mascotas, turnos, servicios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
+        document.getElementById("guardar-mascotas-turnos").style.display = "none"; // Ocultar el botón
     } catch (error) {
-        console.error('Error al guardar mascotas y turnos', error);
+        console.error('Error al guardar mascotas y turnos', error); // Elavorar en futuras versiones
     }
 };
 
@@ -235,25 +233,40 @@ const borrarTodosDatos = () => {
         document.getElementById("borrar-datos").style.display = "none";
         document.getElementById("seccion-salida-datos-dos").style.display = "none";
     } catch (error) {
-        console.error('Error al borrar todos los datos', error);
+        console.error('Error al borrar todos los datos', error); //Elaborar en futuras versiones
     }
 };
 
-const toggleTema = () => {
-    try {
-        const tema = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
-        document.body.dataset.theme = tema;
-        gestionarLocalStorage("guardar", "theme", tema);
-    } catch (error) {
-        console.error('Error al cambiar el tema', error);
+const comenzarDeNuevo = () => {
+    borrarTodosDatos();
+    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
+    if (guardarBtn) {
+        guardarBtn.style.display = "inline-block"; // Mostrar el botón
     }
 };
+
+// const toggleTema = () => { Versiones futuras
+//     try {
+//         const tema = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+//         document.body.dataset.theme = tema;
+//         gestionarLocalStorage("guardar", "theme", tema);
+//     } catch (error) {
+//         console.error('Error al cambiar el tema', error);
+//     }
+// };
 
 const aplicarTema = () => {
     try {
         const temaAlmacenado = gestionarLocalStorage("cargar", "theme") || 'dark';
         document.body.dataset.theme = temaAlmacenado;
     } catch (error) {
-        console.error('Error al aplicar el tema', error);
+        console.error('Error al aplicar el tema', error); // Elaborar en futuras versiones 
+    }
+};
+
+const controlarBotonGuardar = () => {
+    const guardarBtn = document.getElementById("guardar-mascotas-turnos");
+    if (guardarBtn) {
+        guardarBtn.style.display = 'none'; // Ocultar botón
     }
 };

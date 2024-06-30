@@ -4,6 +4,7 @@
 
 
 // Variables
+// Light para futuras versiones
 $fuente-color-dark: rgb(180, 178, 178);
 $background-color-dark: black;
 $fuente-color-dark-title: white;
@@ -12,6 +13,7 @@ $borde-color-dark-medio: gray;
 $input-fondo-color-dark: #333;
 $input-texto-color-dark: white;
 $input-borde-color-dark: #555;
+
 
 body {
     color: $fuente-color-dark;
@@ -124,6 +126,11 @@ ul {
     }
 }
 
+/* Error para validación de formulario */
+.error {
+    color: $fuente-color-dark-title;
+}
+
 .contenedor-02 {
     @extend .contenedor;
     text-align: center;
@@ -203,6 +210,15 @@ form {
     }
 }
 
+#botones-gardar-borrar {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        padding: 0.5rem 1rem;
+    }
+}
+
 input#cliente-nombre,
 input#cliente-telefono {
     padding: 0.2rem;
@@ -225,7 +241,7 @@ select[id^="servicio"] {
     max-width: 20ch;
 }
 
-// Media queries rango - arreglar responsive
+// Media queries rango - Responsive real próxima versión
 @media (max-width: 767px) {
 
     .contenedor-01,

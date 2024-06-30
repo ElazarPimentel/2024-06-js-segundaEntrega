@@ -12,7 +12,7 @@ export const actualizarServiciosList = (servicios) => {
             serviciosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error actualizar lista servicios', error);
+        console.error('Error actualizar lista servicios', error); //Versiones futuras manejo complejo
     }
 };
 
@@ -26,7 +26,7 @@ export const actualizarHorariosList = (horarios) => {
             horariosList.appendChild(li);
         });
     } catch (error) {
-        console.error('Error actualizar lista horarios', error);
+        console.error('Error actualizar lista horarios', error);//Versiones futuras manejo complejo
     }
 };
 
@@ -43,16 +43,16 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios) => {
         mascotaDetalles.innerHTML = '';
 
         if (cliente) {
-            clienteDetalles.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;
+            clienteDetalles.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;//Versiones futuras clase en vez de h2
         }
 
-        let fechaPrimeraVezTexto = "";
+        let fechaPrimeraVezTexto = ""; //Para que ponga la fecha una sola vez
         turnos.forEach((turno, index) => {
             const mascota = mascotas.find(m => m.mascotaId === turno.turnoForeignMascotaId);
             const servicio = servicios[turno.turnoForeignServicioId];
             const turnoInfo = document.createElement('div');
 
-            if (index === 0) {
+            if (index === 0) { // Si primera vez que ponga fecha
                 fechaPrimeraVezTexto = `<p><strong>Fecha</strong>: ${turno.turnoFecha}</p>`;
             }
 
@@ -60,6 +60,6 @@ export const actualizarDOM = (cliente, mascotas, turnos, servicios) => {
             mascotaDetalles.appendChild(turnoInfo);
         });
     } catch (error) {
-        console.error('Error al actualizar el DOM', error);
+        console.error('Error al actualizar el DOM', error);//Versiones futuras manejo complejo
     }
 };
