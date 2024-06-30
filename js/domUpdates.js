@@ -1,6 +1,6 @@
 // Nombre del archivo: js/domUpdates.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 47
+// Versión: 48
 
 export const actualizarServiciosList = (servicios) => {
     try {

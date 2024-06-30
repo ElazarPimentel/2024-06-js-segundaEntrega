@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 42
+// Versión: 48
 
 import { gestionarLocalStorage } from './localStorage.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';

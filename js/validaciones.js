@@ -1,6 +1,6 @@
 // Nombre del archivo: js/validaciones.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 47
+// Versión: 48
 
 // Validación
 export const mostrarError = (elemento, mensaje) => {
@@ -60,14 +60,14 @@ export const validarHora = (fecha, hora, horarios, numeroDeMascotas) => {
     // numeroDeMascotas sea un numreo
     const numeroDeMascotasParsed = parseInt(numeroDeMascotas, 10);
     if (isNaN(numeroDeMascotasParsed)) {
-        console.error("Número de mascotas inválido:", numeroDeMascotas);
+        console.error("Número de mascotas inválido:", numeroDeMascotas);//Vesiones futuras más elaborado
 
         return false;//Si
     }
 
     // Hora de finalización del último turno 45 mins antes
     const turnoHoraFinal = new Date(turnoHora.getTime() + 45 * 60000 * numeroDeMascotasParsed);
-    //console.log(turnoHoraFinal)
+    //console.log(turnoHoraFinal) * Depar para debugg problema intermitente
 
 
     return turnoHora >= new Date(Date.now() + 3600000) && turnoHora >= inicio && turnoHoraFinal <= fin;
