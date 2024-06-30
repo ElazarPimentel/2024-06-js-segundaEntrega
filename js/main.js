@@ -1,6 +1,10 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 41
+// Versión: 47
+
+import { gestionarLocalStorage } from './localStorage.js';
+import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js'; // Importar validarEdadMascota
+import { actualizarServiciosList, actualizarHorariosList, actualizarDOM } from './domUpdates.js';
 
 // Variables y constantes globales
 const servicios = {
@@ -16,49 +20,13 @@ const horarios = {
     Miércoles: "9:00 - 17:00",
     Jueves: "9:00 - 17:00",
     Viernes: "9:00 - 17:00",
-    Sábado: "9:00 - 13:00",
-    Domingo: "Guardia"
+    Sábado: "Cerrado",
+    Domingo: "Cerrado"
 };
 
 let cliente = null;
 let mascotas = [];
 let turnos = [];
-
-const gestionarLocalStorage = (accion, clave, valor = null) => {
-    try {
-        switch (accion) {
-            case "guardar": {
-                const fechaExp = new Date();
-                fechaExp.setDate(fechaExp.getDate() + 45);
-                localStorage.setItem(clave, JSON.stringify({ valor, fechaExp }));
-                break;
-            }
-            case "cargar": {
-                const item = JSON.parse(localStorage.getItem(clave));
-                if (item && new Date(item.fechaExp) > new Date()) {
-                    return item.valor;
-                } else {
-                    localStorage.removeItem(clave);
-                    return null;
-                }
-            }
-            case "borrar": {
-                localStorage.removeItem(clave);
-                break;
-            }
-            case "borrarTodo": {
-                localStorage.clear();
-                break;
-            }
-            default: {
-                throw new Error("Acción no reconocida");
-            }
-        }
-    } catch (error) {
-        console.error(`Error al ${accion} en local storage`, error);
-        return null;
-    }
-};
 
 cliente = gestionarLocalStorage("cargar", "cliente") || null;
 mascotas = gestionarLocalStorage("cargar", "mascotas") || [];
@@ -104,8 +72,8 @@ class Turno {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    actualizarServiciosList();
-    actualizarHorariosList();
+    actualizarServiciosList(servicios);
+    actualizarHorariosList(horarios);
 
     document.body.addEventListener("click", (event) => {
         const { id: targetId } = event.target;
@@ -122,83 +90,92 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleTema();
         }
     });
-    actualizarDOM();
+    actualizarDOM(cliente, mascotas, turnos, servicios);
     aplicarTema();
 });
 
-const actualizarServiciosList = () => {
-    try {
-        const serviciosList = document.getElementById("servicios-listado");
-        serviciosList.innerHTML = '';
-        Object.entries(servicios).forEach(([id, nombre]) => {
-            const li = document.createElement("li");
-            li.textContent = `${id}. ${nombre}`;
-            serviciosList.appendChild(li);
-        });
-    } catch (error) {
-        console.error('Error actualizar lista servicios', error);
-    }
-};
-
-const actualizarHorariosList = () => {
-    try {
-        const horariosList = document.getElementById("horarios-listado");
-        horariosList.innerHTML = '';
-        Object.entries(horarios).forEach(([dia, horas]) => {
-            const li = document.createElement("li");
-            li.innerHTML = `<strong>${dia}</strong>: ${horas}`;
-            horariosList.appendChild(li);
-        });
-    } catch (error) {
-        console.error('Error actualizar lista horarios', error);
-    }
-};
-
 const guardarCliente = () => {
-    try {
-        const nombre = document.getElementById("cliente-nombre").value;
-        const telefono = document.getElementById("cliente-telefono").value;
-        cliente = new Cliente(null, nombre, telefono);
-        gestionarLocalStorage("guardar", "cliente", cliente);
-        document.getElementById("formulario-mascotas-info").style.display = "block";
-    } catch (error) {
-        console.error('Error guardar cliente', error);
+    const nombre = document.getElementById("cliente-nombre");
+    const telefono = document.getElementById("cliente-telefono");
+
+    limpiarError(nombre);
+    limpiarError(telefono);
+
+    console.log("Validating nombre:", nombre.value); // Debug log for nombre
+    if (!validarNombre(nombre.value)) {
+        mostrarError(nombre, "El nombre debe contener entre 2 y 25 letras del alfabeto latino.");
+        return;
     }
+
+    console.log("Validating telefono:", telefono.value); // Debug log for telefono
+    if (!validarTelefono(telefono.value)) {
+        mostrarError(telefono, "El teléfono debe contener solo números, signos +, -, (, ), y espacios, con un máximo de 20 caracteres.");
+        return;
+    }
+
+    cliente = new Cliente(null, nombre.value, telefono.value);
+    gestionarLocalStorage("guardar", "cliente", cliente);
+    document.getElementById("formulario-mascotas-info").style.display = "block";
 };
 
 const mostrarFormulariosMascotas = () => {
-    try {
-        const numMascotas = parseInt(document.getElementById("numero-mascotas").value);
-        const fecha = document.getElementById("turno-fecha").value;
-        const hora = document.getElementById("turno-hora").value;
-        const mascotasForm = document.getElementById("mascotas-formulario");
-        mascotasForm.innerHTML = '';
+    const numMascotas = document.getElementById("numero-mascotas");
+    const fecha = document.getElementById("turno-fecha");
+    const hora = document.getElementById("turno-hora");
 
-        for (let i = 0; i < numMascotas; i++) {
-            const petForm = document.createElement("form");
-            petForm.setAttribute("id", `form-mascota-${i}`);
-            petForm.innerHTML = `
-                <fieldset>
-                    <legend>Datos de la Mascota ${i + 1}</legend>
-                    <label for="mascota-nombre-${i}">Nombre de mascota:</label>
-                    <input type="text" id="mascota-nombre-${i}" name="mascota-nombre-${i}" required aria-label="Nombre de la Mascota ${i + 1}">
-                    <label for="mascota-edad-${i}">Edad (años):</label>
-                    <input type="text" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
-                    <label for="servicio-${i}">Servicio</label>
-                    <select id="servicio-${i}" required aria-label="Servicio para la Mascota ${i + 1}">
-                        ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombre}</option>`).join('')}
-                    </select>
-                </fieldset>
-            `;
-            mascotasForm.appendChild(petForm);
-        }
+    limpiarError(numMascotas);
+    limpiarError(fecha);
+    limpiarError(hora);
 
-        mascotasForm.style.display = "block";
-        document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
-        document.getElementById("borrar-datos").style.display = "inline-block";
-    } catch (error) {
-        console.error('Error al mostrar formularios de mascotas', error);
+    console.log("Validating numero de mascotas:", numMascotas.value); // Debug log for numMascotas
+    if (!validarNumeroMascotas(numMascotas.value)) {
+        mostrarError(numMascotas, "El número de mascotas debe estar entre 1 y 3. Si tiene más de tres mascotas, por favor haga otro turno para las otras mascotas.");
+        return;
     }
+
+    console.log("Validating fecha:", fecha.value); // Debug log for fecha
+    if (!validarFecha(fecha.value)) {
+        mostrarError(fecha, "La fecha del turno debe ser un día que la veterinaria esté abierta y dentro de los próximos 45 días.");
+        return;
+    }
+
+    console.log("Validating dia abierto:", fecha.value); // Debug log for dia abierto
+    if (!validarDiaAbierto(fecha.value)) {
+        mostrarError(fecha, "La veterinaria está cerrada ese día. Por favor elija otro día.");
+        return;
+    }
+
+    console.log("Validating hora:", hora.value); // Debug log for hora
+    if (!validarHora(fecha.value, hora.value, horarios, numMascotas.value)) {
+        mostrarError(hora, "La hora del turno debe estar dentro del horario de atención y al menos una hora después de la hora actual.");
+        return;
+    }
+
+    const mascotasForm = document.getElementById("mascotas-formulario");
+    mascotasForm.innerHTML = '';
+
+    for (let i = 0; i < numMascotas.value; i++) {
+        const petForm = document.createElement("form");
+        petForm.setAttribute("id", `form-mascota-${i}`);
+        petForm.innerHTML = `
+            <fieldset>
+                <legend>Datos de la Mascota ${i + 1}</legend>
+                <label for="mascota-nombre-${i}">Nombre de mascota:</label>
+                <input type="text" id="mascota-nombre-${i}" name="mascota-nombre-${i}" required aria-label="Nombre de la Mascota ${i + 1}">
+                <label for="mascota-edad-${i}">Edad (años):</label>
+                <input type="text" id="mascota-edad-${i}" name="mascota-edad-${i}" required aria-label="Edad de la Mascota ${i + 1}">
+                <label for="servicio-${i}">Servicio</label>
+                <select id="servicio-${i}" required aria-label="Servicio para la Mascota ${i + 1}">
+                    ${Object.entries(servicios).map(([id, nombre]) => `<option value="${id}">${nombre}</option>`).join('')}
+                </select>
+            </fieldset>
+        `;
+        mascotasForm.appendChild(petForm);
+    }
+
+    mascotasForm.style.display = "block";
+    document.getElementById("guardar-mascotas-turnos").style.display = "inline-block";
+    document.getElementById("borrar-datos").style.display = "inline-block";
 };
 
 const guardarMascotasYTurnos = () => {
@@ -212,6 +189,21 @@ const guardarMascotasYTurnos = () => {
             const mascotaNombre = document.getElementById(`mascota-nombre-${i}`).value;
             const mascotaEdad = document.getElementById(`mascota-edad-${i}`).value;
             const servicioId = document.getElementById(`servicio-${i}`).value;
+
+            // Validar nombre de mascota
+            console.log("Validating pet name:", mascotaNombre);
+            if (!validarNombre(mascotaNombre)) {
+                mostrarError(document.getElementById(`mascota-nombre-${i}`), "El nombre de la mascota debe contener entre 2 y 25 letras del alfabeto latino.");
+                return;
+            }
+
+            // Validar edad de mascota
+            console.log("Validating pet age:", mascotaEdad);
+            if (!validarEdadMascota(mascotaEdad)) {
+                mostrarError(document.getElementById(`mascota-edad-${i}`), "La edad de la mascota debe ser un número entre 0 y 40 años.");
+                return;
+            }
+
             const mascota = new Mascota(null, cliente.clienteId, mascotaNombre, mascotaEdad);
             mascotas.push(mascota);
 
@@ -222,44 +214,10 @@ const guardarMascotasYTurnos = () => {
 
         gestionarLocalStorage("guardar", "mascotas", mascotas);
         gestionarLocalStorage("guardar", "turnos", turnos);
-        actualizarDOM();
+        actualizarDOM(cliente, mascotas, turnos, servicios);
         document.getElementById("seccion-salida-datos-dos").style.display = "block";
     } catch (error) {
         console.error('Error al guardar mascotas y turnos', error);
-    }
-};
-
-const actualizarDOM = () => {
-    try {
-        const clienteDetalles = document.getElementById('cliente-detalles');
-        const mascotaDetalles = document.getElementById('mascota-detalles');
-
-        if (!clienteDetalles || !mascotaDetalles) {
-            throw new Error("Elementos requeridos faltantes en el DOM.");
-        }
-
-        clienteDetalles.innerHTML = '';
-        mascotaDetalles.innerHTML = '';
-
-        if (cliente) {
-            clienteDetalles.innerHTML = `<h2>Cliente: ${cliente.clienteNombre}</h2><p><strong>Teléfono</strong>: ${cliente.clienteTelefono}</p>`;
-        }
-
-        let fechaPrimeraVezTexto = "";
-        turnos.forEach((turno, index) => {
-            const mascota = mascotas.find(m => m.mascotaId === turno.turnoForeignMascotaId);
-            const servicio = servicios[turno.turnoForeignServicioId];
-            const turnoInfo = document.createElement('div');
-
-            if (index === 0) {
-                fechaPrimeraVezTexto = `<p><strong>Fecha</strong>: ${turno.turnoFecha}</p>`;
-            }
-
-            turnoInfo.innerHTML = `${index === 0 ? fechaPrimeraVezTexto : ""}<p><strong>Hora</strong>: ${turno.turnoHora} <strong>Mascota</strong>: ${mascota.mascotaNombre} (${mascota.mascotaEdad} año/s) <strong>Servicio</strong>: ${servicio}</p>`;
-            mascotaDetalles.appendChild(turnoInfo);
-        });
-    } catch (error) {
-        console.error('Error al actualizar el DOM', error);
     }
 };
 
@@ -269,7 +227,7 @@ const borrarTodosDatos = () => {
         cliente = null;
         mascotas = [];
         turnos = [];
-        actualizarDOM();
+        actualizarDOM(cliente, mascotas, turnos, servicios);
         document.getElementById("formulario-cliente").reset();
         document.getElementById("formulario-mascotas-info").style.display = "none";
         document.getElementById("mascotas-formulario").style.display = "none";
