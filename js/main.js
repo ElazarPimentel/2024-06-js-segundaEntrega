@@ -1,6 +1,6 @@
 // Nombre del archivo: js/main.js
 // Autor: Alessio Aguirre Pimentel
-// Versión: 48
+// Versión: 49
 
 import { gestionarLocalStorage } from './localStorage.js';
 import { mostrarError, limpiarError, validarNombre, validarTelefono, validarNumeroMascotas, validarFecha, validarDiaAbierto, validarHora, validarEdadMascota } from './validaciones.js';
@@ -28,7 +28,7 @@ let cliente = null;
 let mascotas = [];
 let turnos = [];
 
-cliente = gestionarLocalStorage("cargar", "cliente") || null;
+cliente = gestionarLocalStorage("cargar", "cliente") || null; //Null para objetos
 mascotas = gestionarLocalStorage("cargar", "mascotas") || [];
 turnos = gestionarLocalStorage("cargar", "turnos") || [];
 
